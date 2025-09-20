@@ -1,24 +1,6 @@
 # 使用多阶段构建
 
-# 阶段1: 构建Go后端
-FROM golang:1.21-alpine AS backend-builder
-
-WORKDIR /app/backend
-
-# 安装依赖
-RUN apk add --no-cache git gcc musl-dev sqlite-dev
-
-# 复制go模块文件
-COPY backend/go.mod backend/go.sum ./
-RUN go mod download
-
-# 复制源代码
-COPY backend/ ./
-
-# 构建应用
-RUN CGO_ENABLED=1 GOOS=linux go build -a -installsuffix cgo -o main .
-
-# 阶段2: 构建Vue前端
+# 阶段1: 构建Vue前端
 FROM node:18-alpine AS frontend-builder
 
 WORKDIR /app/frontend
@@ -35,7 +17,7 @@ COPY frontend/ ./
 # 构建前端
 RUN npm run build
 
-# 阶段3: 最终镜像
+# 阶段2: 最终镜像
 FROM alpine:latest
 
 WORKDIR /app
@@ -50,12 +32,18 @@ RUN addgroup -g 1001 -S todolist && \
 # 创建数据目录
 RUN mkdir -p /app/data && \
     mkdir -p /app/static && \
+    mkdir -p /app/config && \
     chown -R todolist:todolist /app
 
-# 从构建阶段复制文件
-COPY --from=backend-builder /app/backend/main /app/
-COPY --from=backend-builder /app/backend/config/config.yaml /app/config/
+# 直接复制预编译的后端二进制文件
+COPY backend/builds/todolist-backend-20250920-183325-linux-amd64 /app/main
+COPY backend/config/config.yaml /app/config/
+
+# 从构建阶段复制前端文件
 COPY --from=frontend-builder /app/frontend/dist /app/static/
+
+# 设置二进制文件权限
+RUN chmod +x /app/main
 
 # 切换到非root用户
 USER todolist
