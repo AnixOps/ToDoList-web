@@ -27,8 +27,8 @@ npm run build
 
 #### 方法一：通过 Wrangler CLI
 ```bash
-# 安装 wrangler（如果还没有安装）
-npm install -g wrangler
+# 安装最新版本的 wrangler（如果还没有安装）
+npm install -g wrangler@latest
 
 # 登录 Cloudflare
 wrangler login
@@ -89,17 +89,22 @@ Cloudflare Pages 会自动为您提供：
 
 ## 故障排除
 
-### 1. API 连接问题
+### 1. Wrangler 版本问题
+- 如果遇到 "Workers-specific command in a Pages project" 错误，确保使用 `wrangler pages deploy` 命令
+- 如果 wrangler 版本过旧，运行 `npm install -g wrangler@latest` 更新到最新版本
+- 推荐使用 `npx wrangler` 来确保使用项目本地的 wrangler 版本
+
+### 2. API 连接问题
 - 检查 `.env.production` 中的 API 地址是否正确
 - 确保后端已正确部署并可访问
 - 检查后端的 CORS 配置
 
-### 2. 构建失败
+### 3. 构建失败
 - 确保所有依赖都已正确安装
 - 检查 Node.js 版本兼容性
 - 查看构建日志获取详细错误信息
 
-### 3. 部署后页面空白
+### 4. 部署后页面空白
 - 检查控制台是否有 JavaScript 错误
 - 确认构建产物在 `dist` 目录中
 - 检查路由配置是否正确
