@@ -1,12 +1,12 @@
 # 使用多阶段构建
 
 # 阶段1: 构建Go后端
-FROM golang:1.21-alpine AS backend-builder
+FROM golang:1.22-alpine AS backend-builder
 
 WORKDIR /app/backend
 
 # 安装依赖
-RUN apk add --no-cache git gcc musl-dev sqlite-dev
+RUN apk add --no-cache git gcc musl-dev sqlite-dev build-base
 
 # 复制go模块文件
 COPY backend/go.mod backend/go.sum ./
@@ -16,7 +16,7 @@ RUN go mod download
 COPY backend/ ./
 
 # 构建应用
-RUN CGO_ENABLED=1 GOOS=linux go build -a -installsuffix cgo -o main .
+RUN CGO_ENABLED=1 GOOS=linux go build -ldflags="-s -w" -o main .
 
 # 阶段2: 构建Vue前端
 FROM node:18-alpine AS frontend-builder
