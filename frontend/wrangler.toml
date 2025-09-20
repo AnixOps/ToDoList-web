@@ -1,0 +1,3 @@
+name = "todolist-web"
+main = "src/main.js"  # 你的 Worker 脚本入口文件路径
+compatibility_date = "2025-09-21" # 最好使用最新日期
