@@ -10,6 +10,8 @@ cd frontend
 npm install
 ```
 
+**注意**: 如果遇到 package-lock.json 不同步的错误，请确保运行 `npm install` 而不是 `npm ci`。
+
 ### 2. 配置后端 API 地址
 在 `frontend/.env.production` 文件中，将 `VITE_API_BASE_URL` 替换为您的实际后端部署地址：
 ```
@@ -41,9 +43,10 @@ npm run deploy
 3. 点击 "Create a project"
 4. 连接到您的 Git 仓库
 5. 设置构建配置：
-   - 构建命令：`npm run build`
+   - 构建命令：`npm install && npm run build`
    - 构建输出目录：`dist`
    - 根目录：`frontend`
+   - Node.js 版本：`18` 或更高版本
 6. 添加环境变量：
    - `VITE_API_BASE_URL`: 您的后端 API 地址
 
