@@ -2,6 +2,13 @@
 
 这个版本的 ToDoList-web 前端已经配置为可以部署到 Cloudflare Workers，使用静态资源处理功能。后端需要单独部署。
 
+## ⚡ Workers 特性
+
+- 静态资源服务，无需服务器
+- 支持 SPA 路由（Vue Router）
+- 全球边缘网络分发
+- 自动 HTTPS 和 CDN
+
 ## 🚀 快速开始
 
 ```bash
@@ -9,7 +16,8 @@ cd frontend
 npm install
 # 编辑 .env.production 设置您的后端 API 地址
 npm run build
-npm run deploy  # 部署到 Cloudflare Workers
+wrangler login           # 登录 Cloudflare（首次使用）
+npm run deploy          # 部署到 Cloudflare Workers
 ```
 
 ## 前端部署步骤
