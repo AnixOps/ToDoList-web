@@ -2,6 +2,16 @@
 
 这个版本的 ToDoList-web 前端已经配置为可以部署到 Cloudflare Pages，后端需要单独部署。
 
+## 🚀 快速开始
+
+```bash
+cd frontend
+npm install
+# 编辑 .env.production 设置您的后端 API 地址
+npm run build
+npm run deploy  # 或使用 Cloudflare Dashboard
+```
+
 ## 前端部署步骤
 
 ### 1. 安装依赖
