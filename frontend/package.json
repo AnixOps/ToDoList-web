@@ -7,8 +7,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "serve": "vite preview",
-    "deploy": "wrangler pages deploy dist",
-    "build:worker": "wrangler deploy",
+    "deploy": "wrangler deploy",
+    "deploy:pages": "wrangler pages deploy dist",
     "dev:worker": "wrangler dev"
   },
   "dependencies": {
@@ -18,7 +18,8 @@
     "axios": "^1.5.0",
     "element-plus": "^2.3.8",
     "@element-plus/icons-vue": "^2.1.0",
-    "dexie": "^3.2.4"
+    "dexie": "^3.2.4",
+    "@cloudflare/kv-asset-handler": "^0.3.4"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.3.4",

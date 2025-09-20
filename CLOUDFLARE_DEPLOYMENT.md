@@ -1,6 +1,6 @@
-# Cloudflare Pages 部署指南
+# Cloudflare Workers 部署指南
 
-这个版本的 ToDoList-web 前端已经配置为可以部署到 Cloudflare Pages，后端需要单独部署。
+这个版本的 ToDoList-web 前端已经配置为可以部署到 Cloudflare Workers，使用静态资源处理功能。后端需要单独部署。
 
 ## 🚀 快速开始
 
@@ -9,7 +9,7 @@ cd frontend
 npm install
 # 编辑 .env.production 设置您的后端 API 地址
 npm run build
-npm run deploy  # 或使用 Cloudflare Dashboard
+npm run deploy  # 部署到 Cloudflare Workers
 ```
 
 ## 前端部署步骤
@@ -33,7 +33,7 @@ VITE_API_BASE_URL=https://your-backend-domain.com/api/v1
 npm run build
 ```
 
-### 4. 部署到 Cloudflare Pages
+### 4. 部署到 Cloudflare Workers
 
 #### 方法一：通过 Wrangler CLI
 ```bash
@@ -43,22 +43,22 @@ npm install -g wrangler@latest
 # 登录 Cloudflare
 wrangler login
 
-# 部署
+# 部署到 Workers
 npm run deploy
 ```
 
 #### 方法二：通过 Cloudflare Dashboard
 1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com/)
-2. 进入 Pages 页面
-3. 点击 "Create a project"
-4. 连接到您的 Git 仓库
-5. 设置构建配置：
-   - 构建命令：`npm install && npm run build`
-   - 构建输出目录：`dist`
-   - 根目录：`frontend`
-   - Node.js 版本：`18` 或更高版本
-6. 添加环境变量：
-   - `VITE_API_BASE_URL`: 您的后端 API 地址
+2. 进入 Workers & Pages 页面
+3. 点击 "Create application"
+4. 选择 "Workers" 选项卡
+5. 使用 Wrangler CLI 或上传构建后的文件
+
+#### 备用方法：部署到 Pages（可选）
+如果您更喜欢使用 Pages：
+```bash
+npm run deploy:pages
+```
 
 ## 后端部署
 

@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Cloudflare Pages 部署脚本
+# Cloudflare Workers 部署脚本
 
 set -e
 
-echo "🚀 开始部署 ToDoList 前端到 Cloudflare Pages..."
+echo "🚀 开始部署 ToDoList 前端到 Cloudflare Workers..."
 
 # 检查是否在 frontend 目录
 if [ ! -f "package.json" ]; then
@@ -38,10 +38,10 @@ if ! command -v wrangler &> /dev/null; then
     npm install -g wrangler
 fi
 
-# 部署到 Cloudflare Pages
-echo "🚀 部署到 Cloudflare Pages..."
+# 部署到 Cloudflare Workers
+echo "🚀 部署到 Cloudflare Workers..."
 npm run deploy
 
 echo "✅ 部署完成！"
-echo "🌐 您的应用现在应该已经在 Cloudflare Pages 上运行了"
+echo "🌐 您的应用现在应该已经在 Cloudflare Workers 上运行了"
 echo "📝 请确保您的后端 API 已正确部署并配置了 CORS"
