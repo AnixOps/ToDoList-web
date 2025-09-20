@@ -1,3 +1,6 @@
+# Cloudflare Pages configuration
 name = "todolist-web"
-main = "src/main.js"  # 你的 Worker 脚本入口文件路径
-compatibility_date = "2025-09-21" # 最好使用最新日期
+compatibility_date = "2024-09-20"
+
+# Pages configuration
+pages_build_output_dir = "dist"
