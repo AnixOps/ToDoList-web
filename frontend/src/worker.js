@@ -3,11 +3,13 @@
  * This worker serves the built Vue.js SPA directly from the assets directory
  */
 
-addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request))
-})
+export default {
+  async fetch(request, env, ctx) {
+    return handleRequest(request, env)
+  }
+}
 
-async function handleRequest(request) {
+async function handleRequest(request, env) {
   const url = new URL(request.url)
   const pathname = url.pathname
   
@@ -15,34 +17,24 @@ async function handleRequest(request) {
     // For SPA routing - serve index.html for routes that don't have file extensions
     // This handles client-side routing for Vue Router
     if (!pathname.includes('.') && pathname !== '/') {
-      // Get the index.html file for SPA routing
-      const indexUrl = new URL('/index.html', request.url)
-      const indexRequest = new Request(indexUrl, {
-        method: request.method,
-        headers: request.headers,
-      })
-      return await fetch(indexRequest)
+      // Serve index.html for SPA routes
+      return env.ASSETS.fetch(new URL('/index.html', request.url))
     }
     
     // For static assets (CSS, JS, images, etc.) and root path
-    return await fetch(request)
+    return env.ASSETS.fetch(request)
     
   } catch (error) {
     // Fallback to index.html if asset not found (for SPA routing)
     try {
-      const indexUrl = new URL('/index.html', request.url)
-      const indexRequest = new Request(indexUrl, {
-        method: 'GET',
-        headers: request.headers,
-      })
-      const response = await fetch(indexRequest)
+      const response = await env.ASSETS.fetch(new URL('/index.html', request.url))
       
       // Return index.html with 200 status for SPA routes
       return new Response(response.body, {
         status: 200,
         statusText: 'OK',
         headers: {
-          ...response.headers,
+          ...Object.fromEntries(response.headers),
           'Content-Type': 'text/html; charset=utf-8'
         }
       })
