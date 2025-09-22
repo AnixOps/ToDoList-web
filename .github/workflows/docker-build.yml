@@ -2,7 +2,7 @@ name: Build and Push Docker Images
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, dev ]
     tags: [ 'v*' ]
   pull_request:
     branches: [ main ]
@@ -16,6 +16,7 @@ env:
 jobs:
   build-backend:
     runs-on: ubuntu-latest
+    environment: Docker
     permissions:
       contents: read
       packages: write
@@ -61,6 +62,7 @@ jobs:
 
   build-frontend:
     runs-on: ubuntu-latest
+    environment: Docker
     permissions:
       contents: read
       packages: write
