@@ -86,7 +86,7 @@
         <div class="panel-header">
           <h2>我的事件</h2>
           <el-button type="primary" @click="showCreateEventDialog = true" class="create-btn">
-            <el-icon><Plus /></el-icon>
+            <el-icon size="small"><Plus /></el-icon>
             创建事件
           </el-button>
         </div>
@@ -151,7 +151,7 @@
             <h3>还没有事件</h3>
             <p>创建你的第一个事件来开始管理任务吧！</p>
             <el-button type="primary" @click="showCreateEventDialog = true">
-              <el-icon><Plus /></el-icon>
+              <el-icon size="small"><Plus /></el-icon>
               创建事件
             </el-button>
           </div>

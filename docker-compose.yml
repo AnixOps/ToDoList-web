@@ -1,8 +1,9 @@
-version: '3.8'
-
 services:
-  todolist-app:
-    build: .
+  # 后端 API 服务
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.backend
     ports:
       - "8080:8080"
     volumes:
@@ -13,6 +14,25 @@ services:
     restart: unless-stopped
     networks:
       - todolist-network
+
+  # 前端开发服务
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - VITE_API_BASE_URL=http://localhost:8080/api/v1
+    restart: unless-stopped
+    networks:
+      - todolist-network
+    depends_on:
+      - backend
 
   # PostgreSQL数据库 (可选)
   postgres:

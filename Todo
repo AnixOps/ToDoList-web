@@ -18,3 +18,6 @@
 4.实现ToDoList的增删改查API,支持大事件和小事件。
 5.前端实现(可用React/Vue等),支持离线(IndexDB)和在线两种模式。
 6.Dockerfile和docker-compose编写,支持容器化部署。
+
+BUG:
+1. If login fails, the app doesn't return to the login page. It will show "there is no KV namespace bound to the script".
