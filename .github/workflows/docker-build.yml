@@ -10,8 +10,8 @@ on:
 env:
   # 使用你的Docker Hub用户名
   REGISTRY: docker.io
-  IMAGE_NAME_BACKEND: r/kalijerry/todolist-backend
-  IMAGE_NAME_FRONTEND: r/kalijerry/todolist-frontend
+  IMAGE_NAME_BACKEND: kalijerry/todolist-backend
+  IMAGE_NAME_FRONTEND: kalijerry/todolist-frontend
 
 jobs:
   build-backend:
