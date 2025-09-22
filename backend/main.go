@@ -43,8 +43,14 @@ func main() {
 	r.Use(middleware.CORS())
 	r.Use(middleware.Logger())
 
-	// 静态文件服务
-	r.Static("/static", "./static")
+	// 根路径健康检查
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "ToDoList Backend API",
+			"version": "1.0.0",
+			"status":  "running",
+		})
+	})
 
 	// API路由组
 	api := r.Group("/api/v1")
@@ -69,13 +75,13 @@ func main() {
 		protected.Use(middleware.AuthMiddleware(cfg.JWT.Secret))
 		{
 			todoHandler := handlers.NewTodoHandler(db)
-			
+
 			// 大事件相关
 			protected.GET("/events", todoHandler.GetEvents)
 			protected.POST("/events", todoHandler.CreateEvent)
 			protected.PUT("/events/:id", todoHandler.UpdateEvent)
 			protected.DELETE("/events/:id", todoHandler.DeleteEvent)
-			
+
 			// 小事件相关
 			protected.GET("/events/:eventId/tasks", todoHandler.GetTasks)
 			protected.POST("/events/:eventId/tasks", todoHandler.CreateTask)

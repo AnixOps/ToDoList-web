@@ -25,10 +25,10 @@ RUN go mod download
 # 复制源代码
 COPY . ./
 
-# 构建应用 - 使用静态链接避免musl libc问题
+# 构建应用 - 启用CGO支持SQLite
 RUN go build \
-    -ldflags '-linkmode external -extldflags "-static"' \
-    -a -installsuffix cgo \
+    -tags=sqlite_omit_load_extension \
+    -ldflags '-w -s' \
     -o main .
 
 # 阶段2: 最终镜像
@@ -37,7 +37,7 @@ FROM alpine:latest
 WORKDIR /app
 
 # 安装运行时依赖
-RUN apk --no-cache add ca-certificates sqlite
+RUN apk --no-cache add ca-certificates sqlite sqlite-libs musl
 
 # 创建非root用户
 RUN addgroup -g 1001 -S todolist && \

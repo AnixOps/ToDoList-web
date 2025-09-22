@@ -1,3 +1,11 @@
+# Cloudflare Workers configuration
 name = "todolist-web"
-main = "src/main.js"  # 你的 Worker 脚本入口文件路径
-compatibility_date = "2025-09-21" # 最好使用最新日期
+main = "src/worker.js"
+compatibility_date = "2024-09-20"
+
+[observability.logs]
+enabled = true
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
