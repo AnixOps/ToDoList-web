@@ -21,3 +21,6 @@
 
 BUG:
 1. If login fails, the app doesn't return to the login page. It will show "there is no KV namespace bound to the script".
+
+Todo:
+1. Make sure the image can build and upload to docker.io
