@@ -1,17 +1,16 @@
-# 使用多阶段构建 - 后端专用
+# 使用 Debian 基础镜像避免 Alpine musl libc 问题
 
 # 阶段1: 构建Go后端
-FROM golang:1.21-alpine AS backend-builder
+FROM golang:1.21-bullseye AS backend-builder
 
 WORKDIR /app/backend
 
-# 安装必要的构建依赖
-RUN apk add --no-cache \
-    git \
+# 更新包管理器并安装必要依赖
+RUN apt-get update && apt-get install -y \
     gcc \
-    musl-dev \
-    sqlite-dev \
-    build-base
+    libc6-dev \
+    libsqlite3-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # 设置构建环境变量
 ENV CGO_ENABLED=1
@@ -25,23 +24,26 @@ RUN go mod download
 # 复制源代码
 COPY . ./
 
-# 构建应用 - 启用CGO支持SQLite
+# 构建应用 - 使用简化的构建命令避免标签冲突
 RUN go build \
-    -tags=sqlite_omit_load_extension \
     -ldflags '-w -s' \
     -o main .
 
-# 阶段2: 最终镜像
-FROM alpine:latest
+# 阶段2: 最终镜像 - 使用轻量级但兼容的基础镜像
+FROM debian:bullseye-slim
 
 WORKDIR /app
 
 # 安装运行时依赖
-RUN apk --no-cache add ca-certificates sqlite sqlite-libs musl
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    libsqlite3-0 \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
 
 # 创建非root用户
-RUN addgroup -g 1001 -S todolist && \
-    adduser -S todolist -u 1001
+RUN groupadd -g 1001 todolist && \
+    useradd -r -u 1001 -g todolist todolist
 
 # 创建数据目录
 RUN mkdir -p /app/data && \
