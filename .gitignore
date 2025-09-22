@@ -1,5 +1,6 @@
 backend/builds/*
 backend/data/*
+backend/main
 frontend/dist/*
 frontend/node_modules/*
 frontend/dist/*
