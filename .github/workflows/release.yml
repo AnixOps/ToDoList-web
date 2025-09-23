@@ -1,0 +1,225 @@
+name: Release Build
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # 匹配 v1.0.0, v1.2.3 等版本标签
+      - 'v*.*'    # 匹配 v1.0, v2.1 等版本标签
+
+permissions:
+  contents: write
+  packages: write
+
+env:
+  REGISTRY: docker.io
+  DOCKER_USERNAME: kalijerry
+
+jobs:
+  build-backend:
+    name: Build Backend Binaries
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - goos: linux
+            goarch: amd64
+            suffix: linux-amd64
+          - goos: windows
+            goarch: amd64
+            suffix: windows-amd64.exe
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+
+      - name: Get version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Build backend binary
+        working-directory: ./backend
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          CGO_ENABLED: 0
+        run: |
+          go mod download
+          go build -ldflags="-s -w -X main.version=${{ steps.version.outputs.VERSION }}" \
+            -o todolist-backend-${{ steps.version.outputs.VERSION }}-${{ matrix.suffix }} \
+            main.go
+
+      - name: Create build directory structure
+        working-directory: ./backend
+        run: |
+          mkdir -p builds/${{ matrix.suffix }}
+          cp todolist-backend-${{ steps.version.outputs.VERSION }}-${{ matrix.suffix }} builds/${{ matrix.suffix }}/
+          cp -r config builds/${{ matrix.suffix }}/
+          if [ "${{ matrix.goos }}" = "windows" ]; then
+            cat > builds/${{ matrix.suffix }}/start.bat << 'EOF'
+          @echo off
+          echo Starting ToDoList Backend Server...
+          todolist-backend-${{ steps.version.outputs.VERSION }}-${{ matrix.suffix }}
+          pause
+          EOF
+          else
+            cat > builds/${{ matrix.suffix }}/start.sh << 'EOF'
+          #!/bin/bash
+          echo "Starting ToDoList Backend Server..."
+          chmod +x todolist-backend-${{ steps.version.outputs.VERSION }}-${{ matrix.suffix }}
+          ./todolist-backend-${{ steps.version.outputs.VERSION }}-${{ matrix.suffix }}
+          EOF
+            chmod +x builds/${{ matrix.suffix }}/start.sh
+          fi
+
+      - name: Upload backend artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: backend-${{ matrix.suffix }}
+          path: backend/builds/${{ matrix.suffix }}/
+
+  build-docker-images:
+    name: Build and Push Docker Images
+    runs-on: ubuntu-latest
+    needs: build-backend
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Get version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile.backend
+          push: true
+          tags: |
+            ${{ env.DOCKER_USERNAME }}/todolist-backend:${{ steps.version.outputs.VERSION }}
+            ${{ env.DOCKER_USERNAME }}/todolist-backend:latest
+          platforms: linux/amd64,linux/arm64
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: true
+          tags: |
+            ${{ env.DOCKER_USERNAME }}/todolist-frontend:${{ steps.version.outputs.VERSION }}
+            ${{ env.DOCKER_USERNAME }}/todolist-frontend:latest
+          platforms: linux/amd64,linux/arm64
+
+  create-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: [build-backend, build-docker-images]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: ./artifacts
+
+      - name: Create release archives
+        run: |
+          cd artifacts
+          
+          # 创建 Linux 版本压缩包
+          cd backend-linux-amd64
+          tar -czf ../todolist-backend-${{ steps.version.outputs.VERSION }}-linux-amd64.tar.gz *
+          cd ..
+          
+          # 创建 Windows 版本压缩包
+          cd backend-windows-amd64.exe
+          zip -r ../todolist-backend-${{ steps.version.outputs.VERSION }}-windows-amd64.zip *
+          cd ..
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          if [ -f CHANGELOG.md ]; then
+            # 如果有 CHANGELOG.md，提取当前版本的更改
+            awk '/^## \[${{ steps.version.outputs.VERSION }}\]/{flag=1;next}/^## \[/{flag=0}flag' CHANGELOG.md > release_notes.md
+          else
+            # 生成简单的发布说明
+            cat > release_notes.md << EOF
+          ## 🚀 ToDoList ${{ steps.version.outputs.VERSION }}
+          
+          ### 📦 包含内容
+          - 后端服务器 (Linux x64 / Windows x64)
+          - Docker镜像 (多架构支持)
+          - 完整的配置文件和启动脚本
+          
+          ### 🐳 Docker 部署
+          \`\`\`bash
+          # 更新 docker-compose.prod.yml 中的镜像版本
+          sed -i 's/:latest/:${{ steps.version.outputs.VERSION }}/g' docker-compose.prod.yml
+          
+          # 启动服务
+          docker compose -f docker-compose.prod.yml up -d
+          \`\`\`
+          
+          ### 📁 二进制部署
+          1. 下载对应平台的压缩包
+          2. 解压到目标目录
+          3. 修改 config/config.yaml 配置
+          4. 运行启动脚本
+          
+          ### 🔧 技术栈
+          - **后端**: Go 1.21, Gin, GORM
+          - **前端**: Vue 3, Element Plus, Vite
+          - **数据库**: SQLite / PostgreSQL
+          - **部署**: Docker, Nginx
+          EOF
+          fi
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.version.outputs.VERSION }}
+          name: ToDoList ${{ steps.version.outputs.VERSION }}
+          body_path: release_notes.md
+          draft: false
+          prerelease: false
+          files: |
+            artifacts/todolist-backend-${{ steps.version.outputs.VERSION }}-linux-amd64.tar.gz
+            artifacts/todolist-backend-${{ steps.version.outputs.VERSION }}-windows-amd64.zip
+            docker-compose.prod.yml
+            .env.example
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update Docker Compose for release
+        run: |
+          # 创建发布版本的 docker-compose 文件
+          sed 's/:dev/:${{ steps.version.outputs.VERSION }}/g' docker-compose.prod.yml > docker-compose-${{ steps.version.outputs.VERSION }}.yml
+          
+          # 上传到 release
+          gh release upload ${{ steps.version.outputs.VERSION }} docker-compose-${{ steps.version.outputs.VERSION }}.yml
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

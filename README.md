@@ -202,7 +202,22 @@ features:
 docker compose -f docker-compose.prod.yml up -d
 ```
 
-### 2. Manual Deployment
+### 2. Binary Deployment
+Download pre-built binaries from [Releases](https://github.com/zdwtest/ToDoList-web/releases):
+
+```bash
+# Linux
+wget https://github.com/zdwtest/ToDoList-web/releases/download/v1.0.0/todolist-backend-v1.0.0-linux-amd64.tar.gz
+tar -xzf todolist-backend-v1.0.0-linux-amd64.tar.gz
+cd linux-amd64
+./start.sh
+
+# Windows
+# Download todolist-backend-v1.0.0-windows-amd64.zip
+# Extract and run start.bat
+```
+
+### 3. Manual Deployment
 ```bash
 # Build image
 docker build -t todolist .
@@ -453,7 +468,22 @@ features:
 docker compose -f docker-compose.prod.yml up -d
 ```
 
-### 2. 手动部署
+### 2. 二进制部署
+从 [Releases](https://github.com/zdwtest/ToDoList-web/releases) 下载预构建的二进制文件：
+
+```bash
+# Linux
+wget https://github.com/zdwtest/ToDoList-web/releases/download/v1.0.0/todolist-backend-v1.0.0-linux-amd64.tar.gz
+tar -xzf todolist-backend-v1.0.0-linux-amd64.tar.gz
+cd linux-amd64
+./start.sh
+
+# Windows
+# 下载 todolist-backend-v1.0.0-windows-amd64.zip
+# 解压并运行 start.bat
+```
+
+### 3. 手动部署
 ```bash
 # 构建后端
 cd backend && go build -o todolist
@@ -516,6 +546,42 @@ ToDoList-web/
 3. 启动后端和前端开发服务器
 4. 使用热重载进行开发
 
+## 版本管理和发布
+
+### 发布流程
+本项目使用自动化工作流进行版本发布：
+
+1. **创建版本标签**
+```bash
+# 创建版本标签
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+2. **自动构建发布**
+   - GitHub Actions 自动检测 `v*.*.*` 格式的标签
+   - 构建 Linux x64 和 Windows x64 二进制文件
+   - 构建并推送 Docker 镜像
+   - 创建 GitHub Release 并上传构建产物
+
+3. **本地测试构建**
+```bash
+# 测试发布构建
+./test-release.sh v1.0.0
+
+# 测试构建包含 Docker 镜像
+./test-release.sh v1.0.0 --docker
+```
+
+### 版本信息
+```bash
+# 查看后端版本
+./todolist-backend -version
+
+# API 查看版本
+curl http://localhost:8080/api/v1/version
+```
+
 ## 许可证
 
 本项目采用MIT许可证，详见LICENSE文件。
@@ -526,12 +592,7 @@ ToDoList-web/
 
 ## 更新日志
 
-### v1.0.0
-- 初始版本发布
-- 支持在线/离线双模式
-- 完整的任务管理功能
-- Docker容器化部署
-- 多数据库支持
+详见 [CHANGELOG.md](CHANGELOG.md)
 
 ---
 

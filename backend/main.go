@@ -1,8 +1,11 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"todolist-backend/config"
 	"todolist-backend/database"
@@ -12,7 +15,26 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// 版本信息，构建时通过 -ldflags 注入
+var (
+	version = "dev"
+	commit  = "unknown"
+	date    = "unknown"
+)
+
 func main() {
+	// 处理版本参数
+	var showVersion = flag.Bool("version", false, "show version information")
+	flag.Parse()
+
+	if *showVersion {
+		fmt.Printf("ToDoList Backend\n")
+		fmt.Printf("Version: %s\n", version)
+		fmt.Printf("Commit: %s\n", commit)
+		fmt.Printf("Build Date: %s\n", date)
+		os.Exit(0)
+	}
+
 	// 加载配置
 	cfg, err := config.LoadConfig("config/config.yaml")
 	if err != nil {
@@ -47,7 +69,7 @@ func main() {
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "ToDoList Backend API",
-			"version": "1.0.0",
+			"version": version,
 			"status":  "running",
 		})
 	})
@@ -57,7 +79,21 @@ func main() {
 	{
 		// 健康检查
 		api.GET("/health", func(c *gin.Context) {
-			c.JSON(http.StatusOK, gin.H{"status": "ok"})
+			c.JSON(http.StatusOK, gin.H{
+				"status":  "ok",
+				"version": version,
+				"commit":  commit,
+				"date":    date,
+			})
+		})
+
+		// 版本信息
+		api.GET("/version", func(c *gin.Context) {
+			c.JSON(http.StatusOK, gin.H{
+				"version": version,
+				"commit":  commit,
+				"date":    date,
+			})
 		})
 
 		// 认证相关路由
