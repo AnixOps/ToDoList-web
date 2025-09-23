@@ -1,7 +1,7 @@
 # 使用 Debian 基础镜像避免 Alpine musl libc 问题
 
 # 阶段1: 构建Go后端
-FROM golang:1.23-bullseye AS backend-builder
+FROM golang:1.21-bullseye AS backend-builder
 
 WORKDIR /app/backend
 

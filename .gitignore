@@ -4,8 +4,3 @@ backend/main
 frontend/dist/*
 frontend/node_modules/*
 frontend/dist/*
-
-# Release testing
-release-test/
-*.tar.gz
-*.zip
