@@ -1,10 +1,15 @@
 <template>
   <div class="login-container">
+    <!-- 语言选择器 -->
+    <div class="language-selector-container">
+      <LanguageSelector />
+    </div>
+    
     <el-card class="login-card">
       <template #header>
         <div class="card-header">
-          <h1>登录</h1>
-          <p>欢迎回到 ToDoList</p>
+          <h1>{{ $t('auth.login') }}</h1>
+          <p>{{ $t('common.login') }} ToDoList</p>
         </div>
       </template>
       
@@ -18,7 +23,7 @@
         <el-form-item prop="username">
           <el-input
             v-model="loginForm.username"
-            placeholder="用户名"
+            :placeholder="$t('auth.username')"
             prefix-icon="User"
             clearable
           />
@@ -28,7 +33,7 @@
           <el-input
             v-model="loginForm.password"
             type="password"
-            placeholder="密码"
+            :placeholder="$t('auth.password')"
             prefix-icon="Lock"
             show-password
             clearable
@@ -44,20 +49,20 @@
             :loading="loading"
             @click="handleLogin"
           >
-            登录
+            {{ $t('auth.loginBtn') }}
           </el-button>
         </el-form-item>
       </el-form>
       
       <div class="login-footer">
-        <el-divider>或</el-divider>
+        <el-divider>{{ $t('common.or') || '或' }}</el-divider>
         <el-button
           type="success"
           size="large"
           style="width: 100%"
           @click="goToRegister"
         >
-          注册新账号
+          {{ $t('auth.registerBtn') }}
         </el-button>
         
         <el-divider />
@@ -68,7 +73,7 @@
           style="width: 100%"
           @click="useOfflineMode"
         >
-          使用离线模式
+          {{ $t('common.offlineMode') || '使用离线模式' }}
         </el-button>
       </div>
     </el-card>
@@ -76,11 +81,14 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
 import { useAuthStore } from '@/stores/auth'
+import LanguageSelector from '@/components/LanguageSelector.vue'
 
+const { t } = useI18n()
 const router = useRouter()
 const authStore = useAuthStore()
 
@@ -92,16 +100,16 @@ const loginForm = reactive({
   password: ''
 })
 
-const loginRules = {
+const loginRules = computed(() => ({
   username: [
-    { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 3, max: 50, message: '用户名长度在 3 到 50 个字符', trigger: 'blur' }
+    { required: true, message: t('auth.usernameRequired'), trigger: 'blur' },
+    { min: 3, max: 50, message: t('auth.usernameLengthError') || '用户名长度在 3 到 50 个字符', trigger: 'blur' }
   ],
   password: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 6, message: '密码长度不能少于 6 个字符', trigger: 'blur' }
+    { required: true, message: t('auth.passwordRequired'), trigger: 'blur' },
+    { min: 6, message: t('auth.passwordLengthError') || '密码长度不能少于 6 个字符', trigger: 'blur' }
   ]
-}
+}))
 
 const handleLogin = async () => {
   if (!loginFormRef.value) return
@@ -112,10 +120,10 @@ const handleLogin = async () => {
     loading.value = true
     try {
       await authStore.login(loginForm)
-      ElMessage.success('登录成功')
+      ElMessage.success(t('auth.loginSuccess'))
       router.push('/todo')
     } catch (error) {
-      ElMessage.error(error.error || '登录失败')
+      ElMessage.error(error.error || t('auth.loginFailed'))
     } finally {
       loading.value = false
     }
@@ -127,7 +135,7 @@ const goToRegister = () => {
 }
 
 const useOfflineMode = () => {
-  ElMessage.info('已切换到离线模式')
+  ElMessage.info(t('common.offlineModeEnabled') || '已切换到离线模式')
   router.push('/todo')
 }
 </script>
@@ -140,6 +148,14 @@ const useOfflineMode = () => {
   justify-content: center;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 20px;
+  position: relative;
+}
+
+.language-selector-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
 }
 
 .login-card {

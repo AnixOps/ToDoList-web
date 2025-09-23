@@ -5,7 +5,7 @@
       <div class="header-left">
         <div class="logo-section">
           <div class="logo-icon">📝</div>
-          <h1 class="logo-text">ToDoList</h1>
+          <h1 class="logo-text">{{ $t('todo.title') }}</h1>
         </div>
         <div class="status-indicators">
           <transition name="status-slide">
@@ -15,13 +15,16 @@
               class="status-tag"
             >
               <i class="status-dot" :class="{ online: isOnline }"></i>
-              {{ isOnline ? '在线模式' : '离线模式' }}
+              {{ isOnline ? $t('common.onlineMode') || '在线模式' : $t('common.offlineMode') }}
             </el-tag>
           </transition>
         </div>
       </div>
       
       <div class="header-right">
+        <!-- 语言选择器 -->
+        <LanguageSelector class="header-language" />
+        
         <!-- 主题切换按钮 -->
         <el-button
           :icon="themeStore.isDark ? 'Sunny' : 'Moon'"
@@ -37,11 +40,11 @@
             <el-button-group>
               <el-button type="primary" @click="exportData" class="tool-btn">
                 <el-icon><Download /></el-icon>
-                <span class="btn-text">导出</span>
+                <span class="btn-text">{{ $t('settings.exportData') }}</span>
               </el-button>
               <el-button type="success" @click="importData" class="tool-btn">
                 <el-icon><Upload /></el-icon>
-                <span class="btn-text">导入</span>
+                <span class="btn-text">{{ $t('settings.importData') }}</span>
               </el-button>
             </el-button-group>
           </div>
@@ -235,13 +238,16 @@
 <script setup>
 import { ref, computed, onMounted, watch, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useAuthStore } from '@/stores/auth'
 import { useTodoStore } from '@/stores/todo'
 import { useThemeStore } from '@/stores/theme'
 import TaskPanel from '@/components/TaskPanel.vue'
 import EventDialog from '@/components/EventDialog.vue'
+import LanguageSelector from '@/components/LanguageSelector.vue'
 
+const { t } = useI18n()
 const router = useRouter()
 const authStore = useAuthStore()
 const todoStore = useTodoStore()
@@ -535,6 +541,10 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.header-language {
+  margin-right: 8px;
 }
 
 .logo-section {
