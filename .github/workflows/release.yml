@@ -2,9 +2,7 @@ name: Release Build
 
 on:
   push:
-    tags:
-      - 'v*.*.*'  # 匹配 v1.0.0, v1.2.3 等版本标签
-      - 'v*.*'    # 匹配 v1.0, v2.1 等版本标签
+    branches: [ v*.*.* , v*.* ]
 
 permissions:
   contents: write
