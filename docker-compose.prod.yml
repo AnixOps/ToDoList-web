@@ -3,7 +3,7 @@ version: '3.8'
 services:
   # 后端服务
   todolist-backend:
-    image: ${DOCKER_USERNAME:-zdwtest}/todolist-backend:${TAG:-latest}
+    image: ${DOCKER_USERNAME:-kalijerry}/todolist-backend:${TAG:-dev}
     container_name: todolist-backend
     ports:
       - "8080:8080"
@@ -24,7 +24,7 @@ services:
 
   # 前端服务
   todolist-frontend:
-    image: ${DOCKER_USERNAME:-zdwtest}/todolist-frontend:${TAG:-latest}
+    image: ${DOCKER_USERNAME:-kalijerry}/todolist-frontend:${TAG:-dev}
     container_name: todolist-frontend
     ports:
       - "80:80"

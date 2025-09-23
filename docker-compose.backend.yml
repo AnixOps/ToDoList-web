@@ -3,7 +3,7 @@ version: '3.8'
 services:
   # 后端服务 - 独立部署
   todolist-backend:
-    image: ${DOCKER_USERNAME:-zdwtest}/todolist-backend:${TAG:-latest}
+    image: ${DOCKER_USERNAME:-kalijerry}/todolist-backend:${TAG:-dev}
     container_name: todolist-backend
     ports:
       - "8080:8080"
