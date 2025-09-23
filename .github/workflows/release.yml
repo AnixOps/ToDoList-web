@@ -2,7 +2,7 @@ name: Release Build
 
 on:
   push:
-    branches: [ v*.*.* , v*.* ]
+    branches: [ release/v*.*.* , v*.* ]
 
 permissions:
   contents: write
