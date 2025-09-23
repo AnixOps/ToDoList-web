@@ -196,56 +196,13 @@ features:
 
 ## Deployment Options
 
-### 1. Unified Deployment (Recommended)
-Use the new unified docker-compose configuration with network aliases for automatic service discovery:
-
+### 1. Production Deployment (Recommended)
 ```bash
-# Deploy only backend
-./deploy-backend.sh
-# Or manually:
-docker compose -f docker-compose.unified.yml --env-file .env.backend up -d
-
-# Deploy only frontend  
-./deploy-frontend.sh
-# Or manually:
-docker compose -f docker-compose.unified.yml --env-file .env.frontend up -d
-
-# Deploy all services
-./deploy-full.sh
-# Or manually:
-docker compose -f docker-compose.unified.yml --env-file .env.full up -d
-```
-
-### 2. Traditional Docker Compose
-```bash
-# Basic deployment (SQLite)
-docker compose up -d
-
-# With PostgreSQL
-docker compose --profile postgres up -d
-
-# With Nginx proxy
-docker compose --profile nginx up -d
-
-# Complete deployment
-docker compose --profile postgres --profile nginx up -d
-
-# Production deployment (all services)
+# Production deployment with all services
 docker compose -f docker-compose.prod.yml up -d
 ```
 
-### 3. Separate Service Deployment
-Deploy backend and frontend services independently:
-
-```bash
-# Deploy only backend service
-docker compose -f docker-compose.backend.yml up -d
-
-# Deploy only frontend service
-docker compose -f docker-compose.frontend.yml up -d
-```
-
-### 4. Single Docker Container
+### 2. Manual Deployment
 ```bash
 # Build image
 docker build -t todolist .
@@ -490,69 +447,13 @@ features:
 
 ## 部署方式
 
-### 1. 统一部署（推荐）
-使用新的统一docker-compose配置，支持网络别名自动服务发现：
-
+### 1. 生产环境部署（推荐）
 ```bash
-# 仅部署后端服务
-./deploy-backend.sh
-# 或手动执行：
-docker compose -f docker-compose.unified.yml --env-file .env.backend up -d
-
-# 仅部署前端服务
-./deploy-frontend.sh
-# 或手动执行：
-docker compose -f docker-compose.unified.yml --env-file .env.frontend up -d
-
-# 部署所有服务
-./deploy-full.sh
-# 或手动执行：
-docker compose -f docker-compose.unified.yml --env-file .env.full up -d
-```
-
-### 2. 传统 Docker Compose
-最简单的部署方式，支持多种配置组合：
-
-```bash
-# 基础部署（SQLite）
-docker compose up -d
-
-# 使用PostgreSQL
-docker compose --profile postgres up -d
-
-# 使用Nginx代理
-docker compose --profile nginx up -d
-
-# 完整部署
-docker compose --profile postgres --profile nginx up -d
-
-# 生产环境部署（所有服务）
+# 生产环境部署所有服务
 docker compose -f docker-compose.prod.yml up -d
 ```
 
-### 3. 独立服务部署
-分别部署后端和前端服务：
-
-```bash
-# 仅部署后端服务
-docker compose -f docker-compose.backend.yml up -d
-
-# 仅部署前端服务
-docker compose -f docker-compose.frontend.yml up -d
-```
-
-### 4. 单独Docker容器
-```bash
-# 构建镜像
-docker build -t todolist .
-
-# 运行容器
-docker run -d -p 8080:8080 \
-  -v todolist_data:/app/data \
-  todolist
-```
-
-### 4. 手动部署
+### 2. 手动部署
 ```bash
 # 构建后端
 cd backend && go build -o todolist
