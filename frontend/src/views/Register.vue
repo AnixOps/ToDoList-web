@@ -77,7 +77,7 @@
           style="width: 100%"
           @click="goToLogin"
         >
-          立即登录
+          {{ $t('auth.loginBtn') }}
         </el-button>
         
         <el-divider />

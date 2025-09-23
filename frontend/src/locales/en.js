@@ -30,7 +30,8 @@ export default {
     or: 'or',
     offlineMode: 'Offline Mode',
     offlineModeEnabled: 'Switched to offline mode',
-    onlineMode: 'Online Mode'
+    onlineMode: 'Online Mode',
+    list: 'List'
   },
 
   // 导航
@@ -78,6 +79,8 @@ export default {
     completed: 'Completed',
     pending: 'Pending',
     inProgress: 'In Progress',
+    cancelled: 'Cancelled',
+    inProgress: 'In Progress',
     high: 'High',
     medium: 'Medium',
     low: 'Low',
@@ -109,12 +112,14 @@ export default {
     sortByPriority: 'Priority',
     ascending: 'Ascending',
     descending: 'Descending',
-    todoRequired: 'Todo content is required',
+    todoRequired: 'Please enter todo content',
     todoAdded: 'Todo added successfully',
     todoUpdated: 'Todo updated successfully',
     todoDeleted: 'Todo deleted successfully',
     todoCompleted: 'Todo completed!',
-    todoIncomplete: 'Todo marked as incomplete'
+    todoIncomplete: 'Todo marked as incomplete',
+    progress: 'Progress',
+    adjustFilters: 'Try adjusting filter criteria'
   },
 
   // 个人资料
@@ -183,6 +188,72 @@ export default {
     deleteSuccess: 'Deleted successfully',
     updateSuccess: 'Updated successfully',
     createSuccess: 'Created successfully'
+  },
+
+  // 事件
+  event: {
+    title: 'My Events',
+    createEvent: 'Create Event',
+    editEvent: 'Edit Event',
+    deleteEvent: 'Delete Event',
+    noEvents: 'No events yet',
+    selectEvent: 'Select an Event',
+    selectEventDescription: 'Click on an event on the left to view and manage tasks',
+    eventName: 'Event Name',
+    eventDescription: 'Event Description',
+    eventCreated: 'Event created successfully',
+    eventUpdated: 'Event updated successfully',
+    eventDeleted: 'Event deleted successfully',
+    createEventFailed: 'Failed to create event',
+    updateEventFailed: 'Failed to update event',
+    deleteEventConfirm: 'Are you sure you want to delete this event?',
+    createFirstEvent: 'Create your first event to start managing tasks!',
+    deleteEventMessage: 'Are you sure you want to delete event "{title}"? This will also delete all related tasks.',
+    deleteEventFailed: 'Failed to delete event'
+  },
+
+  // 任务
+  task: {
+    title: 'Task',
+    createTask: 'Create Task',
+    editTask: 'Edit Task',
+    deleteTask: 'Delete Task',
+    noTasks: 'No tasks yet',
+    taskName: 'Task Name',
+    taskDescription: 'Task Description',
+    taskCreated: 'Task created successfully',
+    taskUpdated: 'Task updated successfully',
+    taskDeleted: 'Task deleted successfully',
+    createTaskFailed: 'Failed to create task',
+    updateTaskFailed: 'Failed to update task',
+    deleteTaskConfirm: 'Are you sure you want to delete this task?',
+    markComplete: 'Mark as Complete',
+    markIncomplete: 'Mark as Incomplete',
+    completed: 'Completed',
+    pending: 'Pending',
+    taskCompleted: 'Task completed',
+    taskRestored: 'Task restored',
+    completionStats: '{completed}/{total} tasks completed'
+  },
+
+  // 用户相关
+  user: {
+    personalSettings: 'Personal Settings',
+    logout: 'Logout',
+    logoutConfirm: 'Are you sure you want to logout?',
+    logoutSuccess: 'Logged out successfully',
+    login: 'Login'
+  },
+
+  // 上传相关
+  upload: {
+    dragHere: 'Drag files here, or click to select',
+    jsonOnly: 'Only JSON format data files can be uploaded',
+    selectFile: 'Please select a file to import',
+    importSuccess: 'Data imported successfully',
+    importFailed: 'Failed to import data',
+    exportSuccess: 'Data exported successfully',
+    exportFailed: 'Failed to export data'
   },
 
   // 时间相关

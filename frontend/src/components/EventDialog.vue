@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     :model-value="modelValue"
-    :title="event ? '编辑事件' : '创建新事件'"
+    :title="event ? $t('event.editEvent') : $t('event.createEvent')"
     width="500px"
     @update:model-value="$emit('update:modelValue', $event)"
   >
@@ -11,44 +11,44 @@
       :rules="rules"
       label-width="80px"
     >
-      <el-form-item label="标题" prop="title">
+      <el-form-item :label="$t('event.eventName')" prop="title">
         <el-input
           v-model="form.title"
-          placeholder="请输入事件标题"
+          :placeholder="$t('event.eventName')"
           clearable
         />
       </el-form-item>
       
-      <el-form-item label="描述">
+      <el-form-item :label="$t('event.eventDescription')">
         <el-input
           v-model="form.description"
           type="textarea"
           :rows="3"
-          placeholder="请输入事件描述（可选）"
+          :placeholder="$t('event.eventDescription')"
         />
       </el-form-item>
       
-      <el-form-item label="优先级">
-        <el-select v-model="form.priority" placeholder="选择优先级">
-          <el-option label="低" value="low" />
-          <el-option label="中" value="medium" />
-          <el-option label="高" value="high" />
+      <el-form-item :label="$t('todo.priority')">
+        <el-select v-model="form.priority" :placeholder="$t('todo.priority')">
+          <el-option :label="$t('todo.low')" value="low" />
+          <el-option :label="$t('todo.medium')" value="medium" />
+          <el-option :label="$t('todo.high')" value="high" />
         </el-select>
       </el-form-item>
       
-      <el-form-item v-if="event" label="状态">
-        <el-select v-model="form.status" placeholder="选择状态">
-          <el-option label="进行中" value="pending" />
-          <el-option label="已完成" value="completed" />
-          <el-option label="已取消" value="cancelled" />
+      <el-form-item v-if="event" :label="$t('todo.status')">
+        <el-select v-model="form.status" :placeholder="$t('todo.status')">
+          <el-option :label="$t('todo.inProgress')" value="pending" />
+          <el-option :label="$t('todo.completed')" value="completed" />
+          <el-option :label="$t('todo.cancelled')" value="cancelled" />
         </el-select>
       </el-form-item>
       
-      <el-form-item label="截止日期">
+      <el-form-item :label="$t('todo.dueDate')">
         <el-date-picker
           v-model="form.dueDate"
           type="datetime"
-          placeholder="选择截止日期（可选）"
+          :placeholder="$t('todo.dueDate')"
           format="YYYY-MM-DD HH:mm"
           value-format="YYYY-MM-DDTHH:mm:ss.sssZ"
           clearable
@@ -58,17 +58,20 @@
     
     <template #footer>
       <el-button @click="$emit('update:modelValue', false)">
-        取消
+        {{ $t('common.cancel') }}
       </el-button>
       <el-button type="primary" @click="handleSave" :loading="saving">
-        {{ event ? '更新' : '创建' }}
+        {{ event ? $t('common.edit') : $t('common.add') }}
       </el-button>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, watch, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps({
   modelValue: Boolean,
@@ -88,12 +91,12 @@ const form = reactive({
   dueDate: null
 })
 
-const rules = {
+const rules = computed(() => ({
   title: [
-    { required: true, message: '请输入事件标题', trigger: 'blur' },
+    { required: true, message: t('event.eventName'), trigger: 'blur' },
     { max: 200, message: '标题长度不能超过200个字符', trigger: 'blur' }
   ]
-}
+}))
 
 const resetForm = () => {
   Object.assign(form, {

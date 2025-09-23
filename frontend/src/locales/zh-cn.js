@@ -30,7 +30,8 @@ export default {
     or: '或',
     offlineMode: '离线模式',
     offlineModeEnabled: '已切换到离线模式',
-    onlineMode: '在线模式'
+    onlineMode: '在线模式',
+    list: '列表'
   },
 
   // 导航
@@ -78,6 +79,7 @@ export default {
     completed: '已完成',
     pending: '待处理',
     inProgress: '进行中',
+    cancelled: '已取消',
     high: '高',
     medium: '中',
     low: '低',
@@ -114,7 +116,9 @@ export default {
     todoUpdated: '待办更新成功',
     todoDeleted: '待办删除成功',
     todoCompleted: '待办已完成！',
-    todoIncomplete: '待办已标记为未完成'
+    todoIncomplete: '待办已标记为未完成',
+    progress: '完成进度',
+    adjustFilters: '尝试调整筛选条件'
   },
 
   // 个人资料
@@ -183,6 +187,72 @@ export default {
     deleteSuccess: '删除成功',
     updateSuccess: '更新成功',
     createSuccess: '创建成功'
+  },
+
+  // 事件
+  event: {
+    title: '我的事件',
+    createEvent: '创建事件',
+    editEvent: '编辑事件',
+    deleteEvent: '删除事件',
+    noEvents: '暂没有事件',
+    selectEvent: '选择一个事件',
+    selectEventDescription: '点击左侧的事件来查看管理中的任务',
+    eventName: '事件名称',
+    eventDescription: '事件描述',
+    eventCreated: '事件创建成功',
+    eventUpdated: '事件更新成功',
+    eventDeleted: '事件删除成功',
+    createEventFailed: '创建事件失败',
+    updateEventFailed: '更新事件失败',
+    deleteEventConfirm: '确定要删除这个事件吗？',
+    createFirstEvent: '创建你的第一个事件来开始管理任务吧！',
+    deleteEventMessage: '确定要删除事件 "{title}" 吗？这将同时删除所有相关任务。',
+    deleteEventFailed: '删除事件失败'
+  },
+
+  // 任务
+  task: {
+    title: '任务',
+    createTask: '创建任务',
+    editTask: '编辑任务',
+    deleteTask: '删除任务',
+    noTasks: '暂没有任务',
+    taskName: '任务名称',
+    taskDescription: '任务描述',
+    taskCreated: '任务创建成功',
+    taskUpdated: '任务更新成功',
+    taskDeleted: '任务删除成功',
+    createTaskFailed: '创建任务失败',
+    updateTaskFailed: '更新任务失败',
+    deleteTaskConfirm: '确定要删除这个任务吗？',
+    markComplete: '标记为完成',
+    markIncomplete: '标记为未完成',
+    completed: '已完成',
+    pending: '待处理',
+    taskCompleted: '任务已完成',
+    taskRestored: '任务已恢复',
+    completionStats: '{completed}/{total} 任务完成'
+  },
+
+  // 用户相关
+  user: {
+    personalSettings: '个人设置',
+    logout: '退出登录',
+    logoutConfirm: '确定要退出登录吗？',
+    logoutSuccess: '已退出登录',
+    login: '登录'
+  },
+
+  // 上传相关
+  upload: {
+    dragHere: '将文件拖到此处，或点击选择',
+    jsonOnly: '只能上传 JSON 格式的数据文件',
+    selectFile: '请选择要导入的文件',
+    importSuccess: '数据导入成功',
+    importFailed: '导入数据失败',
+    exportSuccess: '数据导出成功',
+    exportFailed: '导出数据失败'
   },
 
   // 时间相关

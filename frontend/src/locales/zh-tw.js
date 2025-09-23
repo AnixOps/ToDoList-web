@@ -30,7 +30,8 @@ export default {
     or: '或',
     offlineMode: '離線模式',
     offlineModeEnabled: '已切換到離線模式',
-    onlineMode: '線上模式'
+    onlineMode: '線上模式',
+    list: '列表'
   },
 
   // 導航
@@ -114,7 +115,9 @@ export default {
     todoUpdated: '待辦更新成功',
     todoDeleted: '待辦刪除成功',
     todoCompleted: '待辦已完成！',
-    todoIncomplete: '待辦已標記為未完成'
+    todoIncomplete: '待辦已標記為未完成',
+    progress: '完成進度',
+    adjustFilters: '嘗試調整篩選條件'
   },
 
   // 個人資料
@@ -183,6 +186,74 @@ export default {
     deleteSuccess: '刪除成功',
     updateSuccess: '更新成功',
     createSuccess: '建立成功'
+  },
+
+  // 事件
+  event: {
+    title: '我的事件',
+    createEvent: '建立事件',
+    editEvent: '編輯事件',
+    deleteEvent: '刪除事件',
+    noEvents: '暫無事件',
+    selectEvent: '選擇一個事件',
+    selectEventDescription: '點擊左側的事件來查看管理中的任務',
+    eventName: '事件名稱',
+    eventDescription: '事件描述',
+    eventCreated: '事件建立成功',
+    eventUpdated: '事件更新成功',
+    eventDeleted: '事件刪除成功',
+    createEventFailed: '建立事件失敗',
+    updateEventFailed: '更新事件失敗',
+    deleteEventConfirm: '確定要刪除這個事件嗎？',
+    createFirstEvent: '建立你的第一個事件來開始管理任務吧！',
+    deleteEventMessage: '確定要刪除事件 "{title}" 嗎？這將同時刪除所有相關任務。',
+    deleteEventFailed: '刪除事件失敗'
+  },
+
+  // 任務
+  task: {
+    title: '任務',
+    createTask: '建立任務',
+    editTask: '編輯任務',
+    deleteTask: '刪除任務',
+    noTasks: '暫無任務',
+    taskName: '任務名稱',
+    taskDescription: '任務描述',
+    taskCreated: '任務建立成功',
+    taskUpdated: '任務更新成功',
+    taskDeleted: '任務刪除成功',
+    createTaskFailed: '建立任務失敗',
+    updateTaskFailed: '更新任務失敗',
+    deleteTaskConfirm: '確定要刪除這個任務嗎？',
+    markComplete: '標記為完成',
+    markIncomplete: '標記為未完成',
+    completed: '已完成',
+    pending: '待處理',
+    inProgress: '進行中',
+    cancelled: '已取消',
+    taskCompleted: '任務已完成',
+    taskRestored: '任務已恢復',
+    completionStats: '{completed}/{total} 任務完成'
+  },
+
+  // 用戶相關
+  user: {
+    personalSettings: '個人設定',
+    logout: '登出',
+    logoutConfirm: '確定要登出嗎？',
+    logoutSuccess: '已登出',
+    login: '登入'
+  },
+
+  // 上傳相關
+  upload: {
+    dragHere: '將檔案拖到此處，或點擊選擇',
+    jsonOnly: '只能上傳 JSON 格式的資料檔案',
+    selectFile: '請選擇要匯入的檔案',
+    importSuccess: '資料匯入成功',
+    importFailed: '匯入資料失敗',
+    exportSuccess: '資料匯出成功',
+    exportFailed: '匯出資料失敗'
   },
 
   // 時間相關

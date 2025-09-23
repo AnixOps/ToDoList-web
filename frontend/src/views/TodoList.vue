@@ -63,11 +63,11 @@
                 <el-dropdown-menu>
                   <el-dropdown-item @click="goToProfile">
                     <el-icon><Setting /></el-icon>
-                    个人设置
+                    {{ $t('user.personalSettings') }}
                   </el-dropdown-item>
                   <el-dropdown-item divided @click="logout">
                     <el-icon><SwitchButton /></el-icon>
-                    退出登录
+                    {{ $t('user.logout') }}
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -77,7 +77,7 @@
         
         <el-button v-else type="primary" @click="goToLogin" class="login-btn">
           <el-icon><User /></el-icon>
-          登录
+          {{ $t('user.login') }}
         </el-button>
       </div>
     </div>
@@ -87,10 +87,10 @@
       <!-- 左侧事件列表面板 -->
       <div class="left-panel">
         <div class="panel-header">
-          <h2>我的事件</h2>
+          <h2>{{ $t('event.title') }}</h2>
           <el-button type="primary" @click="showCreateEventDialog = true" class="create-btn">
             <el-icon size="small"><Plus /></el-icon>
-            创建事件
+            {{ $t('event.createEvent') }}
           </el-button>
         </div>
         
@@ -151,11 +151,11 @@
           <!-- 空状态 -->
           <div v-if="events.length === 0" class="empty-events">
             <el-icon><Document /></el-icon>
-            <h3>还没有事件</h3>
-            <p>创建你的第一个事件来开始管理任务吧！</p>
+            <h3>{{ $t('event.noEvents') }}</h3>
+            <p>{{ $t('event.createFirstEvent') }}</p>
             <el-button type="primary" @click="showCreateEventDialog = true">
               <el-icon size="small"><Plus /></el-icon>
-              创建事件
+              {{ $t('event.createEvent') }}
             </el-button>
           </div>
         </div>
@@ -177,8 +177,8 @@
           <div v-else class="tasks-placeholder">
             <div class="placeholder-content">
               <el-icon><List /></el-icon>
-              <h3>选择一个事件</h3>
-              <p>点击左侧的事件来查看和管理其中的任务</p>
+              <h3>{{ $t('event.selectEvent') }}</h3>
+              <p>{{ $t('event.selectEventDescription') }}</p>
             </div>
           </div>
         </transition>
@@ -204,7 +204,7 @@
     <!-- 导入数据对话框 -->
     <el-dialog
       v-model="showImportDialog"
-      title="导入数据"
+      :title="$t('settings.importData')"
       width="400px"
       class="import-dialog"
     >
@@ -218,18 +218,18 @@
       >
         <el-icon class="el-icon--upload upload-icon"><upload-filled /></el-icon>
         <div class="el-upload__text">
-          将文件拖到此处，或<em>点击选择</em>
+          {{ $t('upload.dragHere') }}
         </div>
         <template #tip>
           <div class="el-upload__tip">
-            只能上传 JSON 格式的数据文件
+            {{ $t('upload.jsonOnly') }}
           </div>
         </template>
       </el-upload>
       
       <template #footer>
-        <el-button @click="showImportDialog = false">取消</el-button>
-        <el-button type="primary" @click="confirmImport">确定导入</el-button>
+        <el-button @click="showImportDialog = false">{{ $t('common.cancel') }}</el-button>
+        <el-button type="primary" @click="confirmImport">{{ $t('settings.importData') }}</el-button>
       </template>
     </el-dialog>
   </div>
@@ -285,10 +285,14 @@ const goToProfile = () => {
   router.push('/profile')
 }
 
-const logout = () => {
-  authStore.logout()
-  todoStore.toggleMode()
-  ElMessage.success('已退出登录')
+async function logout() {
+  try {
+    await authStore.logout()
+    router.push('/login')
+    ElMessage.success($t('user.logoutSuccess'))
+  } catch (error) {
+    console.error('Logout error:', error)
+  }
 }
 
 const selectEvent = async (event) => {
@@ -303,7 +307,7 @@ const selectEvent = async (event) => {
   try {
     await todoStore.fetchTasks(event.id)
   } catch (error) {
-    ElMessage.error('获取任务失败')
+    ElMessage.error(t('error.networkError'))
   }
 }
 
@@ -314,11 +318,11 @@ const editEvent = (event) => {
 
 const deleteEventConfirm = (event) => {
   ElMessageBox.confirm(
-    `确定要删除事件 "${event.title}" 吗？这将同时删除所有相关任务。`,
-    '删除确认',
+    t('event.deleteEventMessage', { title: event.title }),
+    t('event.deleteEvent'),
     {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
+      confirmButtonText: t('common.confirm'),
+      cancelButtonText: t('common.cancel'),
       type: 'warning',
     }
   ).then(async () => {
@@ -327,9 +331,9 @@ const deleteEventConfirm = (event) => {
       if (selectedEvent.value?.id === event.id) {
         selectedEvent.value = null
       }
-      ElMessage.success('事件删除成功')
+      ElMessage.success(t('event.eventDeleted'))
     } catch (error) {
-      ElMessage.error('删除事件失败')
+      ElMessage.error(t('event.deleteEventFailed'))
     }
   })
 }
@@ -338,10 +342,10 @@ const handleEventSaved = async (eventData) => {
   try {
     if (editingEvent.value) {
       await todoStore.updateEvent(editingEvent.value.id, eventData)
-      ElMessage.success('事件更新成功')
+      ElMessage.success($t('event.eventUpdated'))
     } else {
       const newEvent = await todoStore.createEvent(eventData)
-      ElMessage.success('事件创建成功')
+      ElMessage.success($t('event.eventCreated'))
       
       // 添加创建成功的动画效果
       setTimeout(() => {
@@ -355,20 +359,20 @@ const handleEventSaved = async (eventData) => {
     showCreateEventDialog.value = false
     editingEvent.value = null
   } catch (error) {
-    ElMessage.error(editingEvent.value ? '更新事件失败' : '创建事件失败')
+    ElMessage.error(editingEvent.value ? $t('event.updateEventFailed') : $t('event.createEventFailed'))
   }
 }
 
 const handleTaskCreated = (task) => {
-  ElMessage.success('任务创建成功')
+  ElMessage.success(t('task.taskCreated'))
 }
 
 const handleTaskUpdated = (task) => {
-  ElMessage.success('任务更新成功')
+  ElMessage.success(t('task.taskUpdated'))
 }
 
 const handleTaskDeleted = (taskId) => {
-  ElMessage.success('任务删除成功')
+  ElMessage.success(t('task.taskDeleted'))
 }
 
 // 工具函数
@@ -383,9 +387,9 @@ const getStatusType = (status) => {
 
 const getStatusText = (status) => {
   const texts = {
-    pending: '进行中',
-    completed: '已完成',
-    cancelled: '已取消'
+    pending: t('todo.inProgress'),
+    completed: t('todo.completed'),
+    cancelled: t('todo.cancelled')
   }
   return texts[status] || status
 }
@@ -401,9 +405,9 @@ const getPriorityType = (priority) => {
 
 const getPriorityText = (priority) => {
   const texts = {
-    low: '低',
-    medium: '中',
-    high: '高'
+    low: t('todo.low'),
+    medium: t('todo.medium'),
+    high: t('todo.high')
   }
   return texts[priority] || priority
 }
@@ -418,7 +422,7 @@ const getTaskStats = (eventId) => {
   if (tasks.length === 0) return ''
   
   const completed = tasks.filter(t => t.status === 'completed').length
-  return `${completed}/${tasks.length} 任务完成`
+  return t('task.completionStats', { completed, total: tasks.length })
 }
 
 const getProgressStyle = (eventId) => {
@@ -446,9 +450,9 @@ const exportData = async () => {
     a.click()
     URL.revokeObjectURL(url)
     
-    ElMessage.success('数据导出成功')
+    ElMessage.success(t('upload.exportSuccess'))
   } catch (error) {
-    ElMessage.error('导出数据失败')
+    ElMessage.error(t('upload.exportFailed'))
   }
 }
 
@@ -462,7 +466,7 @@ const handleFileChange = (uploadFile) => {
 
 const confirmImport = async () => {
   if (!importFile.value) {
-    ElMessage.warning('请选择要导入的文件')
+    ElMessage.warning(t('upload.selectFile'))
     return
   }
   
@@ -475,9 +479,9 @@ const confirmImport = async () => {
     importFile.value = null
     selectedEvent.value = null
     
-    ElMessage.success('数据导入成功')
+    ElMessage.success(t('upload.importSuccess'))
   } catch (error) {
-    ElMessage.error('导入数据失败：' + error.message)
+    ElMessage.error(t('upload.importFailed') + '：' + error.message)
   }
 }
 
@@ -492,7 +496,7 @@ const loadData = async () => {
   try {
     await todoStore.fetchEvents()
   } catch (error) {
-    ElMessage.error('加载数据失败')
+    ElMessage.error(t('error.networkError'))
   }
 }
 
@@ -771,6 +775,7 @@ onUnmounted(() => {
   margin-bottom: 12px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

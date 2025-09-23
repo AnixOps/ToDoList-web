@@ -8,7 +8,7 @@
         <el-icon><ArrowLeft /></el-icon>
         返回
       </el-button>
-      <h1>个人设置</h1>
+      <h1>{{ $t('user.personalSettings') }}</h1>
     </div>
 
     <div class="profile-content">
@@ -79,7 +79,7 @@
             @click="logout"
           >
             <el-icon><SwitchButton /></el-icon>
-            退出登录
+            {{ $t('user.logout') }}
           </el-button>
         </div>
       </el-card>
@@ -121,8 +121,11 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth'
 import { useTodoStore } from '@/stores/todo'
+
+const { t } = useI18n()
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -136,7 +139,7 @@ const user = computed(() => authStore.user)
 const logout = () => {
   authStore.logout()
   todoStore.toggleMode()
-  ElMessage.success('已退出登录')
+  ElMessage.success(t('user.logoutSuccess'))
   router.push('/login')
 }
 
