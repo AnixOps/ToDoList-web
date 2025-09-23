@@ -196,28 +196,56 @@ features:
 
 ## Deployment Options
 
-### 1. Production Deployment (Recommended)
+### 1. Unified Deployment (Recommended)
+Use the new unified docker-compose configuration with network aliases for automatic service discovery:
+
 ```bash
-# Production deployment with all services
+# Deploy only backend
+./deploy-backend.sh
+# Or manually:
+docker compose -f docker-compose.unified.yml --env-file .env.backend up -d
+
+# Deploy only frontend  
+./deploy-frontend.sh
+# Or manually:
+docker compose -f docker-compose.unified.yml --env-file .env.frontend up -d
+
+# Deploy all services
+./deploy-full.sh
+# Or manually:
+docker compose -f docker-compose.unified.yml --env-file .env.full up -d
+```
+
+### 2. Traditional Docker Compose
+```bash
+# Basic deployment (SQLite)
+docker compose up -d
+
+# With PostgreSQL
+docker compose --profile postgres up -d
+
+# With Nginx proxy
+docker compose --profile nginx up -d
+
+# Complete deployment
+docker compose --profile postgres --profile nginx up -d
+
+# Production deployment (all services)
 docker compose -f docker-compose.prod.yml up -d
 ```
 
-### 2. Binary Deployment
-Download pre-built binaries from [Releases](https://github.com/zdwtest/ToDoList-web/releases):
+### 3. Separate Service Deployment
+Deploy backend and frontend services independently:
 
 ```bash
-# Linux
-wget https://github.com/zdwtest/ToDoList-web/releases/download/v1.0.0/todolist-backend-v1.0.0-linux-amd64.tar.gz
-tar -xzf todolist-backend-v1.0.0-linux-amd64.tar.gz
-cd linux-amd64
-./start.sh
+# Deploy only backend service
+docker compose -f docker-compose.backend.yml up -d
 
-# Windows
-# Download todolist-backend-v1.0.0-windows-amd64.zip
-# Extract and run start.bat
+# Deploy only frontend service
+docker compose -f docker-compose.frontend.yml up -d
 ```
 
-### 3. Manual Deployment
+### 4. Single Docker Container
 ```bash
 # Build image
 docker build -t todolist .
@@ -462,28 +490,69 @@ features:
 
 ## 部署方式
 
-### 1. 生产环境部署（推荐）
+### 1. 统一部署（推荐）
+使用新的统一docker-compose配置，支持网络别名自动服务发现：
+
 ```bash
-# 生产环境部署所有服务
+# 仅部署后端服务
+./deploy-backend.sh
+# 或手动执行：
+docker compose -f docker-compose.unified.yml --env-file .env.backend up -d
+
+# 仅部署前端服务
+./deploy-frontend.sh
+# 或手动执行：
+docker compose -f docker-compose.unified.yml --env-file .env.frontend up -d
+
+# 部署所有服务
+./deploy-full.sh
+# 或手动执行：
+docker compose -f docker-compose.unified.yml --env-file .env.full up -d
+```
+
+### 2. 传统 Docker Compose
+最简单的部署方式，支持多种配置组合：
+
+```bash
+# 基础部署（SQLite）
+docker compose up -d
+
+# 使用PostgreSQL
+docker compose --profile postgres up -d
+
+# 使用Nginx代理
+docker compose --profile nginx up -d
+
+# 完整部署
+docker compose --profile postgres --profile nginx up -d
+
+# 生产环境部署（所有服务）
 docker compose -f docker-compose.prod.yml up -d
 ```
 
-### 2. 二进制部署
-从 [Releases](https://github.com/zdwtest/ToDoList-web/releases) 下载预构建的二进制文件：
+### 3. 独立服务部署
+分别部署后端和前端服务：
 
 ```bash
-# Linux
-wget https://github.com/zdwtest/ToDoList-web/releases/download/v1.0.0/todolist-backend-v1.0.0-linux-amd64.tar.gz
-tar -xzf todolist-backend-v1.0.0-linux-amd64.tar.gz
-cd linux-amd64
-./start.sh
+# 仅部署后端服务
+docker compose -f docker-compose.backend.yml up -d
 
-# Windows
-# 下载 todolist-backend-v1.0.0-windows-amd64.zip
-# 解压并运行 start.bat
+# 仅部署前端服务
+docker compose -f docker-compose.frontend.yml up -d
 ```
 
-### 3. 手动部署
+### 4. 单独Docker容器
+```bash
+# 构建镜像
+docker build -t todolist .
+
+# 运行容器
+docker run -d -p 8080:8080 \
+  -v todolist_data:/app/data \
+  todolist
+```
+
+### 4. 手动部署
 ```bash
 # 构建后端
 cd backend && go build -o todolist
@@ -546,42 +615,6 @@ ToDoList-web/
 3. 启动后端和前端开发服务器
 4. 使用热重载进行开发
 
-## 版本管理和发布
-
-### 发布流程
-本项目使用自动化工作流进行版本发布：
-
-1. **创建版本标签**
-```bash
-# 创建版本标签
-git tag v1.0.0
-git push origin v1.0.0
-```
-
-2. **自动构建发布**
-   - GitHub Actions 自动检测 `v*.*.*` 格式的标签
-   - 构建 Linux x64 和 Windows x64 二进制文件
-   - 构建并推送 Docker 镜像
-   - 创建 GitHub Release 并上传构建产物
-
-3. **本地测试构建**
-```bash
-# 测试发布构建
-./test-release.sh v1.0.0
-
-# 测试构建包含 Docker 镜像
-./test-release.sh v1.0.0 --docker
-```
-
-### 版本信息
-```bash
-# 查看后端版本
-./todolist-backend -version
-
-# API 查看版本
-curl http://localhost:8080/api/v1/version
-```
-
 ## 许可证
 
 本项目采用MIT许可证，详见LICENSE文件。
@@ -592,7 +625,12 @@ curl http://localhost:8080/api/v1/version
 
 ## 更新日志
 
-详见 [CHANGELOG.md](CHANGELOG.md)
+### v1.0.0
+- 初始版本发布
+- 支持在线/离线双模式
+- 完整的任务管理功能
+- Docker容器化部署
+- 多数据库支持
 
 ---
 

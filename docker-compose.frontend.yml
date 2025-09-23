@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  # 前端服务 - 独立部署
+  todolist-frontend:
+    image: ${DOCKER_USERNAME:-kalijerry}/todolist-frontend:${TAG:-dev}
+    container_name: todolist-frontend
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    networks:
+      todolist-network:
+        aliases:
+          - frontend
+          - web
+          - www
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    volumes:
+      # 使用独立的nginx配置
+      - ./frontend/nginx.standalone.conf:/etc/nginx/conf.d/default.conf:ro
+
+networks:
+  todolist-network:
+    driver: bridge
