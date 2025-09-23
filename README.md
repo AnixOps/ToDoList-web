@@ -209,9 +209,27 @@ docker-compose --profile nginx up -d
 
 # Complete deployment
 docker-compose --profile postgres --profile nginx up -d
+
+# Production deployment (all services)
+docker-compose -f docker-compose.prod.yml up -d
 ```
 
-### 2. Single Docker Container
+### 2. Separate Service Deployment
+Deploy backend and frontend services independently:
+
+```bash
+# Deploy only backend service
+./deploy-backend.sh
+# Or manually:
+docker-compose -f docker-compose.backend.yml up -d
+
+# Deploy only frontend service
+./deploy-frontend.sh
+# Or manually:
+docker-compose -f docker-compose.frontend.yml up -d
+```
+
+### 3. Single Docker Container
 ```bash
 # Build image
 docker build -t todolist .
@@ -222,7 +240,7 @@ docker run -d -p 8080:8080 \
   todolist
 ```
 
-### 3. Manual Deployment
+### 4. Manual Deployment
 ```bash
 # Build backend
 cd backend && go build -o todolist
@@ -471,9 +489,27 @@ docker-compose --profile nginx up -d
 
 # 完整部署
 docker-compose --profile postgres --profile nginx up -d
+
+# 生产环境部署（所有服务）
+docker-compose -f docker-compose.prod.yml up -d
 ```
 
-### 2. 单独Docker容器
+### 2. 独立服务部署
+分别部署后端和前端服务：
+
+```bash
+# 仅部署后端服务
+./deploy-backend.sh
+# 或手动执行：
+docker-compose -f docker-compose.backend.yml up -d
+
+# 仅部署前端服务
+./deploy-frontend.sh
+# 或手动执行：
+docker-compose -f docker-compose.frontend.yml up -d
+```
+
+### 3. 单独Docker容器
 ```bash
 # 构建镜像
 docker build -t todolist .
@@ -484,7 +520,7 @@ docker run -d -p 8080:8080 \
   todolist
 ```
 
-### 3. 手动部署
+### 4. 手动部署
 ```bash
 # 构建后端
 cd backend && go build -o todolist

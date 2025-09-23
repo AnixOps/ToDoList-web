@@ -1,6 +1,6 @@
 services:
   # 后端 API 服务
-  backend:
+  todolist-backend:
     build:
       context: ./backend
       dockerfile: Dockerfile.backend
@@ -32,7 +32,7 @@ services:
     networks:
       - todolist-network
     depends_on:
-      - backend
+      - todolist-backend
 
   # PostgreSQL数据库 (可选)
   postgres:
