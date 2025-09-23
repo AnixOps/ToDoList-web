@@ -196,40 +196,56 @@ features:
 
 ## Deployment Options
 
-### 1. Docker Compose (Recommended)
+### 1. Unified Deployment (Recommended)
+Use the new unified docker-compose configuration with network aliases for automatic service discovery:
+
 ```bash
-# Basic deployment (SQLite)
-docker-compose up -d
+# Deploy only backend
+./deploy-backend.sh
+# Or manually:
+docker compose -f docker-compose.unified.yml --env-file .env.backend up -d
 
-# With PostgreSQL
-docker-compose --profile postgres up -d
+# Deploy only frontend  
+./deploy-frontend.sh
+# Or manually:
+docker compose -f docker-compose.unified.yml --env-file .env.frontend up -d
 
-# With Nginx proxy
-docker-compose --profile nginx up -d
-
-# Complete deployment
-docker-compose --profile postgres --profile nginx up -d
-
-# Production deployment (all services)
-docker-compose -f docker-compose.prod.yml up -d
+# Deploy all services
+./deploy-full.sh
+# Or manually:
+docker compose -f docker-compose.unified.yml --env-file .env.full up -d
 ```
 
-### 2. Separate Service Deployment
+### 2. Traditional Docker Compose
+```bash
+# Basic deployment (SQLite)
+docker compose up -d
+
+# With PostgreSQL
+docker compose --profile postgres up -d
+
+# With Nginx proxy
+docker compose --profile nginx up -d
+
+# Complete deployment
+docker compose --profile postgres --profile nginx up -d
+
+# Production deployment (all services)
+docker compose -f docker-compose.prod.yml up -d
+```
+
+### 3. Separate Service Deployment
 Deploy backend and frontend services independently:
 
 ```bash
 # Deploy only backend service
-./deploy-backend.sh
-# Or manually:
-docker-compose -f docker-compose.backend.yml up -d
+docker compose -f docker-compose.backend.yml up -d
 
 # Deploy only frontend service
-./deploy-frontend.sh
-# Or manually:
-docker-compose -f docker-compose.frontend.yml up -d
+docker compose -f docker-compose.frontend.yml up -d
 ```
 
-### 3. Single Docker Container
+### 4. Single Docker Container
 ```bash
 # Build image
 docker build -t todolist .
@@ -474,42 +490,58 @@ features:
 
 ## 部署方式
 
-### 1. Docker Compose（推荐）
-最简单的部署方式，支持多种配置组合：
-
-```bash
-# 基础部署（SQLite）
-docker-compose up -d
-
-# 使用PostgreSQL
-docker-compose --profile postgres up -d
-
-# 使用Nginx代理
-docker-compose --profile nginx up -d
-
-# 完整部署
-docker-compose --profile postgres --profile nginx up -d
-
-# 生产环境部署（所有服务）
-docker-compose -f docker-compose.prod.yml up -d
-```
-
-### 2. 独立服务部署
-分别部署后端和前端服务：
+### 1. 统一部署（推荐）
+使用新的统一docker-compose配置，支持网络别名自动服务发现：
 
 ```bash
 # 仅部署后端服务
 ./deploy-backend.sh
 # 或手动执行：
-docker-compose -f docker-compose.backend.yml up -d
+docker compose -f docker-compose.unified.yml --env-file .env.backend up -d
 
 # 仅部署前端服务
 ./deploy-frontend.sh
 # 或手动执行：
-docker-compose -f docker-compose.frontend.yml up -d
+docker compose -f docker-compose.unified.yml --env-file .env.frontend up -d
+
+# 部署所有服务
+./deploy-full.sh
+# 或手动执行：
+docker compose -f docker-compose.unified.yml --env-file .env.full up -d
 ```
 
-### 3. 单独Docker容器
+### 2. 传统 Docker Compose
+最简单的部署方式，支持多种配置组合：
+
+```bash
+# 基础部署（SQLite）
+docker compose up -d
+
+# 使用PostgreSQL
+docker compose --profile postgres up -d
+
+# 使用Nginx代理
+docker compose --profile nginx up -d
+
+# 完整部署
+docker compose --profile postgres --profile nginx up -d
+
+# 生产环境部署（所有服务）
+docker compose -f docker-compose.prod.yml up -d
+```
+
+### 3. 独立服务部署
+分别部署后端和前端服务：
+
+```bash
+# 仅部署后端服务
+docker compose -f docker-compose.backend.yml up -d
+
+# 仅部署前端服务
+docker compose -f docker-compose.frontend.yml up -d
+```
+
+### 4. 单独Docker容器
 ```bash
 # 构建镜像
 docker build -t todolist .

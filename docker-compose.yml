@@ -13,7 +13,11 @@ services:
       - GIN_MODE=release
     restart: unless-stopped
     networks:
-      - todolist-network
+      todolist-network:
+        aliases:
+          - backend
+          - api
+          - todolist-api
 
   # 前端开发服务
   frontend:
