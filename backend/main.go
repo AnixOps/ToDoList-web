@@ -38,19 +38,19 @@ func main() {
 	// 加载配置 / Load configuration
 	cfg, err := config.LoadConfig("config/config.yaml")
 	if err != nil {
-		log.Fatalf("无法加载配置文件: %v / Unable to load configuration file: %v", err)
+		log.Fatalf("无法加载配置文件 / Unable to load configuration file: %v", err)
 	}
 
 	// 初始化数据库 / Initialize database
 	db, err := database.InitDB(cfg)
 	if err != nil {
-		log.Fatalf("数据库初始化失败: %v / Database initialization failed: %v", err)
+		log.Fatalf("数据库初始化失败 / Database initialization failed: %v", err)
 	}
 	defer db.Close()
 
 	// 运行数据库迁移 / Run database migration
 	if err := database.Migrate(db); err != nil {
-		log.Fatalf("数据库迁移失败: %v / Database migration failed: %v", err)
+		log.Fatalf("数据库迁移失败 / Database migration failed: %v", err)
 	}
 
 	// 设置Gin模式 / Set Gin mode
