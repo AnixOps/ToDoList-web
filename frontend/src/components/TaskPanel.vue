@@ -12,9 +12,9 @@
             {{ getStatusText(event.status) }}
           </el-tag>
           <el-tag :type="getPriorityType(event.priority)" size="small">
-            优先级: {{ getPriorityText(event.priority) }}
+            {{ $t('todo.priority') }}: {{ getPriorityText(event.priority) }}
           </el-tag>
-          <span class="task-count">{{ tasks.length }} 个任务</span>
+          <span class="task-count">{{ tasks.length }} {{ $t('task.title') }}</span>
         </div>
       </div>
       <el-button
@@ -30,7 +30,7 @@
     <!-- 进度条 -->
     <div class="progress-section animate-slide-in-up">
       <div class="progress-header">
-        <span class="progress-label">完成进度</span>
+        <span class="progress-label">{{ $t('todo.progress') }}</span>
         <span class="progress-percentage">{{ progressPercentage }}%</span>
       </div>
       <div class="progress-container">
@@ -52,7 +52,7 @@
         @click="showCreateTaskDialog = true"
       >
         <el-icon class="btn-icon"><Plus /></el-icon>
-        <span>添加新任务</span>
+        <span>{{ $t('task.createTask') }}</span>
         <div class="btn-ripple"></div>
       </el-button>
     </div>
@@ -62,28 +62,28 @@
       <div class="filter-section">
         <el-select
           v-model="filterStatus"
-          placeholder="筛选状态"
+          :placeholder="$t('todo.filterByStatus')"
           size="small"
           style="width: 120px"
           @change="filterTasks"
         >
-          <el-option label="全部" value="all" />
-          <el-option label="进行中" value="pending" />
-          <el-option label="已完成" value="completed" />
-          <el-option label="已取消" value="cancelled" />
+          <el-option :label="$t('todo.allTodos')" value="all" />
+          <el-option :label="$t('todo.inProgress')" value="pending" />
+          <el-option :label="$t('todo.completed')" value="completed" />
+          <el-option :label="$t('todo.cancelled')" value="cancelled" />
         </el-select>
         
         <el-select
           v-model="sortBy"
-          placeholder="排序方式"
+          :placeholder="$t('todo.sortBy')"
           size="small"
           style="width: 120px"
           @change="sortTasks"
         >
-          <el-option label="创建时间" value="created" />
-          <el-option label="优先级" value="priority" />
-          <el-option label="状态" value="status" />
-          <el-option label="截止时间" value="dueDate" />
+          <el-option :label="$t('todo.sortByCreateTime')" value="created" />
+          <el-option :label="$t('todo.sortByPriority')" value="priority" />
+          <el-option :label="$t('todo.status')" value="status" />
+          <el-option :label="$t('todo.sortByDueDate')" value="dueDate" />
         </el-select>
       </div>
       
@@ -108,7 +108,7 @@
     <!-- 任务列表 -->
     <div class="tasks-section">
       <div class="tasks-header">
-        <h3>任务列表</h3>
+        <h3>{{ $t('task.title') }}{{ $t('common.list') || '列表' }}</h3>
         <span class="tasks-count">{{ filteredTasks.length }} / {{ tasks.length }}</span>
       </div>
 
@@ -200,8 +200,8 @@
         <div class="empty-icon">
           <el-icon><DocumentChecked /></el-icon>
         </div>
-        <h3>{{ tasks.length === 0 ? '暂无任务' : '没有符合条件的任务' }}</h3>
-        <p>{{ tasks.length === 0 ? '点击上方按钮创建第一个任务' : '尝试调整筛选条件' }}</p>
+        <h3>{{ tasks.length === 0 ? $t('task.noTasks') : $t('todo.noTodos') }}</h3>
+        <p>{{ tasks.length === 0 ? $t('todo.addFirstTodo') : $t('todo.adjustFilters') }}</p>
       </div>
     </div>
     <!-- 创建/编辑任务对话框 -->
@@ -216,6 +216,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import { useTodoStore } from '@/stores/todo'
 import { useThemeStore } from '@/stores/theme'
 import TaskDialog from './TaskDialog.vue'
@@ -301,9 +302,9 @@ const toggleTaskStatus = async (task) => {
       }, 600)
     }
     
-    ElMessage.success(newStatus === 'completed' ? '任务已完成' : '任务已恢复')
+    ElMessage.success(newStatus === 'completed' ? $t('task.taskCompleted') : $t('task.taskRestored'))
   } catch (error) {
-    ElMessage.error('更新任务状态失败')
+    ElMessage.error($t('task.updateTaskFailed'))
   }
 }
 
@@ -370,10 +371,11 @@ const getStatusType = (status) => {
 }
 
 const getStatusText = (status) => {
+  const { t } = useI18n()
   const texts = {
-    pending: '进行中',
-    completed: '已完成',
-    cancelled: '已取消'
+    pending: t('todo.inProgress'),
+    completed: t('todo.completed'),
+    cancelled: t('todo.cancelled')
   }
   return texts[status] || status
 }
@@ -388,10 +390,11 @@ const getPriorityType = (priority) => {
 }
 
 const getPriorityText = (priority) => {
+  const { t } = useI18n()
   const texts = {
-    low: '低',
-    medium: '中',
-    high: '高'
+    low: t('todo.low'),
+    medium: t('todo.medium'),
+    high: t('todo.high')
   }
   return texts[priority] || priority
 }

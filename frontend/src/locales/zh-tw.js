@@ -1,0 +1,285 @@
+export default {
+  // 通用
+  common: {
+    ok: '確定',
+    cancel: '取消',
+    confirm: '確認',
+    delete: '刪除',
+    edit: '編輯',
+    save: '儲存',
+    loading: '載入中...',
+    search: '搜尋',
+    add: '新增',
+    submit: '提交',
+    reset: '重置',
+    close: '關閉',
+    back: '返回',
+    next: '下一步',
+    previous: '上一步',
+    refresh: '重新整理',
+    clear: '清空',
+    select: '選擇',
+    settings: '設定',
+    language: '語言',
+    theme: '主題',
+    logout: '登出',
+    login: '登入',
+    register: '註冊',
+    profile: '個人資料',
+    home: '首頁',
+    or: '或',
+    offlineMode: '離線模式',
+    offlineModeEnabled: '已切換到離線模式',
+    onlineMode: '線上模式',
+    list: '列表'
+  },
+
+  // 導航
+  nav: {
+    todoList: '待辦事項',
+    profile: '個人資料',
+    settings: '設定'
+  },
+
+  // 認證
+  auth: {
+    login: '登入',
+    register: '註冊',
+    username: '使用者名稱',
+    password: '密碼',
+    confirmPassword: '確認密碼',
+    email: '電子郵件',
+    loginBtn: '登入',
+    registerBtn: '註冊',
+    loginSuccess: '登入成功！',
+    registerSuccess: '註冊成功！',
+    loginFailed: '登入失敗',
+    registerFailed: '註冊失敗',
+    usernameRequired: '請輸入使用者名稱',
+    passwordRequired: '請輸入密碼',
+    emailRequired: '請輸入電子郵件',
+    passwordMismatch: '兩次輸入的密碼不一致',
+    alreadyHaveAccount: '已有帳戶？',
+    noAccount: '沒有帳戶？',
+    forgotPassword: '忘記密碼？',
+    usernameLengthError: '使用者名稱長度在 3 到 50 個字元',
+    passwordLengthError: '密碼長度不能少於 6 個字元'
+  },
+
+  // 待辦事項
+  todo: {
+    title: '待辦事項',
+    addTodo: '新增待辦',
+    editTodo: '編輯待辦',
+    todoContent: '待辦內容',
+    priority: '優先順序',
+    dueDate: '截止日期',
+    category: '分類',
+    status: '狀態',
+    completed: '已完成',
+    pending: '待處理',
+    inProgress: '進行中',
+    high: '高',
+    medium: '中',
+    low: '低',
+    normal: '普通',
+    urgent: '緊急',
+    work: '工作',
+    personal: '個人',
+    study: '學習',
+    health: '健康',
+    other: '其他',
+    createTime: '建立時間',
+    updateTime: '更新時間',
+    completedTime: '完成時間',
+    allTodos: '全部',
+    completedTodos: '已完成',
+    pendingTodos: '未完成',
+    deleteTodo: '刪除待辦',
+    deleteConfirm: '確定要刪除這個待辦事項嗎？',
+    markComplete: '標記為完成',
+    markIncomplete: '標記為未完成',
+    noTodos: '暫無待辦事項',
+    addFirstTodo: '新增你的第一個待辦事項！',
+    filterByStatus: '依狀態篩選',
+    filterByPriority: '依優先順序篩選',
+    filterByCategory: '依分類篩選',
+    sortBy: '排序方式',
+    sortByCreateTime: '建立時間',
+    sortByDueDate: '截止日期',
+    sortByPriority: '優先順序',
+    ascending: '升序',
+    descending: '降序',
+    todoRequired: '請輸入待辦內容',
+    todoAdded: '待辦新增成功',
+    todoUpdated: '待辦更新成功',
+    todoDeleted: '待辦刪除成功',
+    todoCompleted: '待辦已完成！',
+    todoIncomplete: '待辦已標記為未完成',
+    progress: '完成進度',
+    adjustFilters: '嘗試調整篩選條件'
+  },
+
+  // 個人資料
+  profile: {
+    title: '個人資料',
+    personalInfo: '個人資訊',
+    changePassword: '修改密碼',
+    oldPassword: '目前密碼',
+    newPassword: '新密碼',
+    confirmNewPassword: '確認新密碼',
+    updateProfile: '更新資料',
+    updateSuccess: '資料更新成功',
+    updateFailed: '資料更新失敗',
+    passwordChanged: '密碼修改成功',
+    passwordChangeFailed: '密碼修改失敗',
+    avatar: '大頭照',
+    nickname: '暱稱',
+    bio: '個人簡介',
+    joinDate: '加入時間',
+    totalTodos: '總待辦數',
+    completedCount: '已完成',
+    pendingCount: '未完成'
+  },
+
+  // 設定
+  settings: {
+    title: '設定',
+    appearance: '外觀',
+    language: '語言',
+    theme: '主題',
+    lightTheme: '淺色',
+    darkTheme: '深色',
+    systemTheme: '跟隨系統',
+    notifications: '通知',
+    enableNotifications: '啟用通知',
+    dataManagement: '資料管理',
+    exportData: '匯出資料',
+    importData: '匯入資料',
+    clearData: '清空所有資料',
+    clearDataConfirm: '確定要清空所有資料嗎？此操作無法復原。',
+    about: '關於',
+    version: '版本',
+    feedback: '意見回饋',
+    support: '支援',
+    privacyPolicy: '隱私權政策',
+    termsOfService: '服務條款'
+  },
+
+  // 連結
+  links: {
+    website: '官方網站',
+    github: 'GitHub',
+    instagram: 'Instagram',
+    twitter: 'X (Twitter)',
+    socialMedia: '社群媒體'
+  },
+
+  // 錯誤訊息
+  error: {
+    networkError: '網路錯誤，請重試',
+    serverError: '伺服器錯誤，請稍後重試',
+    unknownError: '發生未知錯誤',
+    notFound: '頁面未找到',
+    unauthorized: '未授權存取',
+    forbidden: '存取被拒絕',
+    timeout: '請求逾時',
+    offline: '您目前處於離線狀態',
+    validationError: '驗證錯誤'
+  },
+
+  // 成功訊息
+  success: {
+    operationSuccess: '操作成功',
+    saveSuccess: '儲存成功',
+    deleteSuccess: '刪除成功',
+    updateSuccess: '更新成功',
+    createSuccess: '建立成功'
+  },
+
+  // 事件
+  event: {
+    title: '我的事件',
+    createEvent: '建立事件',
+    editEvent: '編輯事件',
+    deleteEvent: '刪除事件',
+    noEvents: '暫無事件',
+    selectEvent: '選擇一個事件',
+    selectEventDescription: '點擊左側的事件來查看管理中的任務',
+    eventName: '事件名稱',
+    eventDescription: '事件描述',
+    eventCreated: '事件建立成功',
+    eventUpdated: '事件更新成功',
+    eventDeleted: '事件刪除成功',
+    createEventFailed: '建立事件失敗',
+    updateEventFailed: '更新事件失敗',
+    deleteEventConfirm: '確定要刪除這個事件嗎？',
+    createFirstEvent: '建立你的第一個事件來開始管理任務吧！',
+    deleteEventMessage: '確定要刪除事件 "{title}" 嗎？這將同時刪除所有相關任務。',
+    deleteEventFailed: '刪除事件失敗'
+  },
+
+  // 任務
+  task: {
+    title: '任務',
+    createTask: '建立任務',
+    editTask: '編輯任務',
+    deleteTask: '刪除任務',
+    noTasks: '暫無任務',
+    taskName: '任務名稱',
+    taskDescription: '任務描述',
+    taskCreated: '任務建立成功',
+    taskUpdated: '任務更新成功',
+    taskDeleted: '任務刪除成功',
+    createTaskFailed: '建立任務失敗',
+    updateTaskFailed: '更新任務失敗',
+    deleteTaskConfirm: '確定要刪除這個任務嗎？',
+    markComplete: '標記為完成',
+    markIncomplete: '標記為未完成',
+    completed: '已完成',
+    pending: '待處理',
+    inProgress: '進行中',
+    cancelled: '已取消',
+    taskCompleted: '任務已完成',
+    taskRestored: '任務已恢復',
+    completionStats: '{completed}/{total} 任務完成'
+  },
+
+  // 用戶相關
+  user: {
+    personalSettings: '個人設定',
+    logout: '登出',
+    logoutConfirm: '確定要登出嗎？',
+    logoutSuccess: '已登出',
+    login: '登入'
+  },
+
+  // 上傳相關
+  upload: {
+    dragHere: '將檔案拖到此處，或點擊選擇',
+    jsonOnly: '只能上傳 JSON 格式的資料檔案',
+    selectFile: '請選擇要匯入的檔案',
+    importSuccess: '資料匯入成功',
+    importFailed: '匯入資料失敗',
+    exportSuccess: '資料匯出成功',
+    exportFailed: '匯出資料失敗'
+  },
+
+  // 時間相關
+  time: {
+    today: '今天',
+    yesterday: '昨天',
+    tomorrow: '明天',
+    thisWeek: '本週',
+    thisMonth: '本月',
+    overdue: '已逾期',
+    noDeadline: '無截止日期',
+    justNow: '剛剛',
+    minutesAgo: '{n}分鐘前',
+    hoursAgo: '{n}小時前',
+    daysAgo: '{n}天前',
+    weeksAgo: '{n}週前',
+    monthsAgo: '{n}個月前',
+    yearsAgo: '{n}年前'
+  }
+}
