@@ -1,9 +1,9 @@
 server:
   port: ":8080"
-  mode: "debug"  # debug 或 release
+  mode: "debug"  # debug 或 release / debug or release
 
 database:
-  type: "sqlite"  # sqlite 或 postgres
+  type: "sqlite"  # sqlite 或 postgres / sqlite or postgres
   sqlite:
     path: "./data/todolist.db"
   postgres:
@@ -16,7 +16,7 @@ database:
 
 jwt:
   secret: "your-jwt-secret-key-change-this-in-production"
-  expires_in: 24  # JWT过期时间，单位：小时
+  expires_in: 24  # JWT过期时间，单位：小时 / JWT expiration time in hours
 
 features:
-  enable_registration: true  # 是否启用注册功能
+  enable_registration: true  # 是否启用注册功能 / Whether to enable registration functionality

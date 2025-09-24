@@ -1,18 +1,18 @@
 #!/bin/bash
 
-# TodoList Docker 构建和发布脚本
-# 用于本地构建和推送到Docker Hub
+# TodoList Docker 构建和发布脚本 / TodoList Docker Build and Release Script
+# 用于本地构建和推送到Docker Hub / For local building and pushing to Docker Hub
 
 set -e
 
-# 颜色输出
+# 颜色输出 / Color output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# 配置
+# 配置 / Configuration
 DEFAULT_USERNAME="zdwtest"
 DEFAULT_TAG="latest"
 

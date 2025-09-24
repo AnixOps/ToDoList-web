@@ -1,14 +1,14 @@
 #!/bin/bash
 
-# Cloudflare Workers 部署脚本
+# Cloudflare Workers 部署脚本 / Cloudflare Workers Deployment Script
 
 set -e
 
-echo "🚀 开始部署 ToDoList 前端到 Cloudflare Workers..."
+echo "🚀 开始部署 ToDoList 前端到 Cloudflare Workers... / Starting deployment of ToDoList frontend to Cloudflare Workers..."
 
-# 检查是否在 frontend 目录
+# 检查是否在 frontend 目录 / Check if in frontend directory
 if [ ! -f "package.json" ]; then
-    echo "❌ 错误：请在 frontend 目录下运行此脚本"
+    echo "❌ 错误：请在 frontend 目录下运行此脚本 / Error: Please run this script in the frontend directory"
     exit 1
 fi
 
@@ -24,12 +24,12 @@ if [ ! -f ".env.production" ]; then
     fi
 fi
 
-# 安装依赖
-echo "📦 安装依赖..."
+# 安装依赖 / Install dependencies
+echo "📦 安装依赖... / Installing dependencies..."
 npm install
 
-# 构建项目
-echo "🔨 构建项目..."
+# 构建项目 / Build project
+echo "🔨 构建项目... / Building project..."
 npm run build
 
 # 检查是否安装了 wrangler

@@ -1,37 +1,40 @@
-# Cloudflare Workers 部署指南
+# Cloudflare Workers 部署指南 / Cloudflare Workers Deployment Guide
 
 这个版本的 ToDoList-web 前端已经配置为可以部署到 Cloudflare Workers，使用静态资源处理功能。后端需要单独部署。
+This version of ToDoList-web frontend is configured to deploy to Cloudflare Workers using static asset serving capabilities. The backend needs to be deployed separately.
 
-## ⚡ Workers 特性
+## ⚡ Workers 特性 / Workers Features
 
-- 静态资源服务，无需服务器
-- 支持 SPA 路由（Vue Router）
-- 全球边缘网络分发
-- 自动 HTTPS 和 CDN
+- 静态资源服务，无需服务器 / Static asset serving without servers
+- 支持 SPA 路由（Vue Router） / SPA routing support (Vue Router)
+- 全球边缘网络分发 / Global edge network distribution
+- 自动 HTTPS 和 CDN / Automatic HTTPS and CDN
 
-## 🚀 快速开始
+## 🚀 快速开始 / Quick Start
 
 ```bash
 cd frontend
 npm install
-# 编辑 .env.production 设置您的后端 API 地址
+# 编辑 .env.production 设置您的后端 API 地址 / Edit .env.production to set your backend API URL
 npm run build
-wrangler login           # 登录 Cloudflare（首次使用）
-npm run deploy          # 部署到 Cloudflare Workers
+wrangler login           # 登录 Cloudflare（首次使用） / Login to Cloudflare (first time)
+npm run deploy          # 部署到 Cloudflare Workers / Deploy to Cloudflare Workers
 ```
 
-## 前端部署步骤
+## 前端部署步骤 / Frontend Deployment Steps
 
-### 1. 安装依赖
+### 1. 安装依赖 / Install Dependencies
 ```bash
 cd frontend
 npm install
 ```
 
 **注意**: 如果遇到 package-lock.json 不同步的错误，请确保运行 `npm install` 而不是 `npm ci`。
+**Note**: If you encounter package-lock.json sync errors, make sure to run `npm install` instead of `npm ci`.
 
-### 2. 配置后端 API 地址
+### 2. 配置后端 API 地址 / Configure Backend API URL
 在 `frontend/.env.production` 文件中，将 `VITE_API_BASE_URL` 替换为您的实际后端部署地址：
+In the `frontend/.env.production` file, replace `VITE_API_BASE_URL` with your actual backend deployment URL:
 ```
 VITE_API_BASE_URL=https://your-backend-domain.com/api/v1
 ```

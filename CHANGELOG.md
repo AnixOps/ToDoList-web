@@ -20,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Frontend API baseURL configuration for production builds
 - Nginx proxy configuration for backend services
 
-## [v0.1] - 2024-09-23
+## [v0.1.0] - 2025-09-21
 
 ### Added
 - Complete todo list management system
@@ -40,5 +40,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Deployment**: Docker Compose, multi-environment support
 - **Database**: SQLite (default), PostgreSQL optional
 
-[Unreleased]: https://github.com/zdwtest/ToDoList-web/compare/v0.1...HEAD
-[v0.1]: https://github.com/zdwtest/ToDoList-web/releases/tag/v0.1
+[v0.1]: https://github.com/AnixOps/ToDoList-web/releases/tag/v0.1.0
+
+## [v0.1.1] - 2025-09-23
+
+### Added / 新增功能
+- Docker image published to Docker Hub (docker.io) / 在 Docker Hub (docker.io) 上发布了 Docker 镜像
+- Internationalization (i18n) support / 国际化 (i18n) 支持
+- Automated Docker image build and push workflow / 自动化 Docker 镜像构建和推送工作流
+- Automated release workflow for GitHub releases / 自动化 GitHub 版本发布工作流
+- Multi-platform Docker images support (linux/amd64, linux/arm64) / 多平台 Docker 镜像支持 (linux/amd64, linux/arm64)
+
+### Improved / 改进
+- Enhanced CI/CD pipeline automation / 增强的 CI/CD 流水线自动化
+- Streamlined deployment process / 简化的部署流程
+
+[v0.1.1]: https://github.com/AnixOps/ToDoList-web/releases/tag/v0.1.1
+

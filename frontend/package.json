@@ -1,7 +1,7 @@
 {
   "name": "todolist-frontend",
   "version": "1.0.0",
-  "description": "ToDoList前端项目",
+  "description": "ToDoList前端项目 / ToDoList Frontend Project",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

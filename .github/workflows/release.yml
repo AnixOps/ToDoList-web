@@ -46,12 +46,12 @@ jobs:
         id: version
         run: |
           if [[ "${{ github.ref }}" == refs/tags/* ]]; then
-            # 如果是标签推送，使用标签作为版本
+            # 如果是标签推送，使用标签作为版本 / If tag push, use tag as version
             VERSION=${GITHUB_REF#refs/tags/}
           else
-            # 如果是分支推送，使用分支名
+            # 如果是分支推送，使用分支名 / If branch push, use branch name
             BRANCH_NAME=${GITHUB_REF#refs/heads/}
-            # 从分支名提取版本号（如 release/v0.1.1 -> v0.1.1）
+            # 从分支名提取版本号（如 release/v0.1.1 -> v0.1.1） / Extract version from branch name (e.g., release/v0.1.1 -> v0.1.1)
             if [[ "$BRANCH_NAME" =~ release/v([0-9]+\.[0-9]+\.[0-9]+) ]]; then
               VERSION="v${BASH_REMATCH[1]}"
             else

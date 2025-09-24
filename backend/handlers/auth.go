@@ -11,13 +11,13 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// AuthHandler 认证处理器
+// AuthHandler 认证处理器 / Authentication handler
 type AuthHandler struct {
 	db  *gorm.DB
 	cfg *config.Config
 }
 
-// NewAuthHandler 创建认证处理器
+// NewAuthHandler 创建认证处理器 / Create authentication handler
 func NewAuthHandler(db *gorm.DB, cfg *config.Config) *AuthHandler {
 	return &AuthHandler{
 		db:  db,
@@ -25,7 +25,7 @@ func NewAuthHandler(db *gorm.DB, cfg *config.Config) *AuthHandler {
 	}
 }
 
-// Register 用户注册
+// Register 用户注册 / User registration
 func (h *AuthHandler) Register(c *gin.Context) {
 	var req models.CreateUserRequest
 	if err := c.ShouldBindJSON(&req); err != nil {

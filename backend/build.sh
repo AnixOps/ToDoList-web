@@ -1,18 +1,18 @@
 #!/bin/bash
 
 # TodoList Backend Cross-Platform Build Script
-# 支持构建 Windows 和 Linux 版本
+# 支持构建 Windows 和 Linux 版本 / Supports building Windows and Linux versions
 
 set -e
 
-# 颜色输出
+# 颜色输出 / Color output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# 配置
+# 配置 / Configuration
 APP_NAME="todolist-backend"
 VERSION="${VERSION:-$(date +%Y%m%d-%H%M%S)}"
 BUILD_DIR="builds"

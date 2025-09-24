@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  # 后端服务
+  # 后端服务 / Backend Service
   todolist-backend:
     image: ${DOCKER_USERNAME:-kalijerry}/todolist-backend:${TAG:-dev}
     container_name: todolist-backend
@@ -26,7 +26,7 @@ services:
       retries: 3
       start_period: 40s
 
-  # 前端服务
+  # 前端服务 / Frontend Service
   todolist-frontend:
     image: ${DOCKER_USERNAME:-kalijerry}/todolist-frontend:${TAG:-dev}
     container_name: todolist-frontend
@@ -48,7 +48,7 @@ services:
       timeout: 10s
       retries: 3
 
-  # PostgreSQL数据库 (可选)
+  # PostgreSQL数据库 (可选) / PostgreSQL Database (Optional)
   postgres:
     image: postgres:15-alpine
     container_name: todolist-postgres
@@ -69,7 +69,7 @@ services:
       timeout: 5s
       retries: 5
 
-  # Redis缓存 (可选)
+  # Redis缓存 (可选) / Redis Cache (Optional)
   redis:
     image: redis:7-alpine
     container_name: todolist-redis

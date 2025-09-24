@@ -15,7 +15,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// 版本信息，构建时通过 -ldflags 注入
+// 版本信息，构建时通过 -ldflags 注入 / Version information, injected via -ldflags during build
 var (
 	version = "dev"
 	commit  = "unknown"
@@ -23,7 +23,7 @@ var (
 )
 
 func main() {
-	// 处理版本参数
+	// 处理版本参数 / Handle version parameter
 	var showVersion = flag.Bool("version", false, "show version information")
 	flag.Parse()
 
@@ -35,25 +35,25 @@ func main() {
 		os.Exit(0)
 	}
 
-	// 加载配置
+	// 加载配置 / Load configuration
 	cfg, err := config.LoadConfig("config/config.yaml")
 	if err != nil {
-		log.Fatalf("无法加载配置文件: %v", err)
+		log.Fatalf("无法加载配置文件: %v / Unable to load configuration file: %v", err)
 	}
 
-	// 初始化数据库
+	// 初始化数据库 / Initialize database
 	db, err := database.InitDB(cfg)
 	if err != nil {
-		log.Fatalf("数据库初始化失败: %v", err)
+		log.Fatalf("数据库初始化失败: %v / Database initialization failed: %v", err)
 	}
 	defer db.Close()
 
-	// 运行数据库迁移
+	// 运行数据库迁移 / Run database migration
 	if err := database.Migrate(db); err != nil {
-		log.Fatalf("数据库迁移失败: %v", err)
+		log.Fatalf("数据库迁移失败: %v / Database migration failed: %v", err)
 	}
 
-	// 设置Gin模式
+	// 设置Gin模式 / Set Gin mode
 	if cfg.Server.Mode == "release" {
 		gin.SetMode(gin.ReleaseMode)
 	}

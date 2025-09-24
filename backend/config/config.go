@@ -7,7 +7,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-// Config 应用配置结构
+// Config 应用配置结构 / Application configuration structure
 type Config struct {
 	Server   ServerConfig   `yaml:"server"`
 	Database DatabaseConfig `yaml:"database"`
@@ -15,17 +15,17 @@ type Config struct {
 	Features FeatureConfig  `yaml:"features"`
 }
 
-// ServerConfig 服务器配置
+// ServerConfig 服务器配置 / Server configuration
 type ServerConfig struct {
 	Port string `yaml:"port"`
 	Mode string `yaml:"mode"` // debug, release
 }
 
-// DatabaseConfig 数据库配置
+// DatabaseConfig 数据库配置 / Database configuration
 type DatabaseConfig struct {
-	Type     string          `yaml:"type"`     // sqlite, postgres
-	SQLite   SQLiteConfig    `yaml:"sqlite"`
-	Postgres PostgresConfig  `yaml:"postgres"`
+	Type     string         `yaml:"type"` // sqlite, postgres
+	SQLite   SQLiteConfig   `yaml:"sqlite"`
+	Postgres PostgresConfig `yaml:"postgres"`
 }
 
 // SQLiteConfig SQLite配置
