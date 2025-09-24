@@ -167,6 +167,15 @@ export default {
     termsOfService: '服务条款'
   },
 
+  // 链接
+  links: {
+    website: '官方网站',
+    github: 'GitHub',
+    instagram: 'Instagram',
+    twitter: 'X (Twitter)',
+    socialMedia: '社交媒体'
+  },
+
   // 错误消息
   error: {
     networkError: '网络错误，请重试',

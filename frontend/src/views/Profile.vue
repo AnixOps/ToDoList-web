@@ -69,6 +69,48 @@
       <el-card style="margin-top: 20px;">
         <template #header>
           <div class="card-header">
+            <span>{{ $t('links.socialMedia') }}</span>
+          </div>
+        </template>
+        
+        <div class="social-links">
+          <el-button
+            type="primary"
+            @click="openLink('https://www.anixops.com')"
+          >
+            <el-icon><Globe /></el-icon>
+            {{ $t('links.website') }}
+          </el-button>
+          
+          <el-button
+            type="info"
+            @click="openLink('https://github.com/zdwtest/ToDoList-web')"
+          >
+            <el-icon><Link /></el-icon>
+            {{ $t('links.github') }}
+          </el-button>
+          
+          <el-button
+            type="warning"
+            @click="openLink('https://x.com/AnixOps/')"
+          >
+            <el-icon><ChatDotRound /></el-icon>
+            {{ $t('links.twitter') }}
+          </el-button>
+          
+          <el-button
+            type="success"
+            @click="openLink('https://www.instagram.com/anixops/')"
+          >
+            <el-icon><Camera /></el-icon>
+            {{ $t('links.instagram') }}
+          </el-button>
+        </div>
+      </el-card>
+
+      <el-card style="margin-top: 20px;">
+        <template #header>
+          <div class="card-header">
             <span>账号操作</span>
           </div>
         </template>
@@ -141,6 +183,10 @@ const logout = () => {
   todoStore.toggleMode()
   ElMessage.success(t('user.logoutSuccess'))
   router.push('/login')
+}
+
+const openLink = (url) => {
+  window.open(url, '_blank', 'noopener,noreferrer')
 }
 
 const exportData = async () => {
@@ -247,10 +293,16 @@ const formatDate = (dateString) => {
 }
 
 .data-actions,
-.account-actions {
+.account-actions,
+.social-links {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+}
+
+.social-links .el-button {
+  flex: 1;
+  min-width: 120px;
 }
 
 @media (max-width: 768px) {
@@ -259,12 +311,14 @@ const formatDate = (dateString) => {
   }
   
   .data-actions,
-  .account-actions {
+  .account-actions,
+  .social-links {
     flex-direction: column;
   }
   
   .data-actions .el-button,
-  .account-actions .el-button {
+  .account-actions .el-button,
+  .social-links .el-button {
     width: 100%;
   }
 }

@@ -166,6 +166,15 @@ export default {
     termsOfService: '服務條款'
   },
 
+  // 連結
+  links: {
+    website: '官方網站',
+    github: 'GitHub',
+    instagram: 'Instagram',
+    twitter: 'X (Twitter)',
+    socialMedia: '社群媒體'
+  },
+
   // 錯誤訊息
   error: {
     networkError: '網路錯誤，請重試',

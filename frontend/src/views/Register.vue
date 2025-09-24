@@ -92,6 +92,28 @@
         </el-button>
       </div>
     </el-card>
+    
+    <!-- 社交链接 -->
+    <div class="social-links-container">
+      <div class="social-links">
+        <a href="https://www.anixops.com" target="_blank" rel="noopener noreferrer" class="social-link">
+          <el-icon><Globe /></el-icon>
+          {{ $t('links.website') }}
+        </a>
+        <a href="https://github.com/zdwtest/ToDoList-web" target="_blank" rel="noopener noreferrer" class="social-link">
+          <el-icon><Link /></el-icon>
+          {{ $t('links.github') }}
+        </a>
+        <a href="https://x.com/AnixOps/" target="_blank" rel="noopener noreferrer" class="social-link">
+          <el-icon><ChatDotRound /></el-icon>
+          {{ $t('links.twitter') }}
+        </a>
+        <a href="https://www.instagram.com/anixops/" target="_blank" rel="noopener noreferrer" class="social-link">
+          <el-icon><Camera /></el-icon>
+          {{ $t('links.instagram') }}
+        </a>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -209,6 +231,44 @@ const useOfflineMode = () => {
 
 .register-footer {
   margin-top: 20px;
+}
+
+.social-links-container {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #909399;
+  text-decoration: none;
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.social-link:hover {
+  color: #409eff;
+  background: rgba(64, 158, 255, 0.1);
+  border-color: rgba(64, 158, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.social-link .el-icon {
+  font-size: 16px;
 }
 
 :deep(.el-divider__text) {

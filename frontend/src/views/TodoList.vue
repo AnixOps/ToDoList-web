@@ -65,6 +65,22 @@
                     <el-icon><Setting /></el-icon>
                     {{ $t('user.personalSettings') }}
                   </el-dropdown-item>
+                  <el-dropdown-item divided @click="openLink('https://www.anixops.com')">
+                    <el-icon><Globe /></el-icon>
+                    {{ $t('links.website') }}
+                  </el-dropdown-item>
+                  <el-dropdown-item @click="openLink('https://github.com/zdwtest/ToDoList-web')">
+                    <el-icon><Link /></el-icon>
+                    {{ $t('links.github') }}
+                  </el-dropdown-item>
+                  <el-dropdown-item @click="openLink('https://x.com/AnixOps/')">
+                    <el-icon><ChatDotRound /></el-icon>
+                    {{ $t('links.twitter') }}
+                  </el-dropdown-item>
+                  <el-dropdown-item @click="openLink('https://www.instagram.com/anixops/')">
+                    <el-icon><Camera /></el-icon>
+                    {{ $t('links.instagram') }}
+                  </el-dropdown-item>
                   <el-dropdown-item divided @click="logout">
                     <el-icon><SwitchButton /></el-icon>
                     {{ $t('user.logout') }}
@@ -232,6 +248,33 @@
         <el-button type="primary" @click="confirmImport">{{ $t('settings.importData') }}</el-button>
       </template>
     </el-dialog>
+
+    <!-- 页脚 -->
+    <footer class="app-footer">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="https://www.anixops.com" target="_blank" rel="noopener noreferrer" class="footer-link">
+            <el-icon><Globe /></el-icon>
+            {{ $t('links.website') }}
+          </a>
+          <a href="https://github.com/zdwtest/ToDoList-web" target="_blank" rel="noopener noreferrer" class="footer-link">
+            <el-icon><Link /></el-icon>
+            {{ $t('links.github') }}
+          </a>
+          <a href="https://x.com/AnixOps/" target="_blank" rel="noopener noreferrer" class="footer-link">
+            <el-icon><ChatDotRound /></el-icon>
+            {{ $t('links.twitter') }}
+          </a>
+          <a href="https://www.instagram.com/anixops/" target="_blank" rel="noopener noreferrer" class="footer-link">
+            <el-icon><Camera /></el-icon>
+            {{ $t('links.instagram') }}
+          </a>
+        </div>
+        <div class="footer-copyright">
+          <p>&copy; 2025 AnixOps. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -283,6 +326,10 @@ const goToLogin = () => {
 
 const goToProfile = () => {
   router.push('/profile')
+}
+
+const openLink = (url) => {
+  window.open(url, '_blank', 'noopener,noreferrer')
 }
 
 async function logout() {
@@ -1032,6 +1079,62 @@ onUnmounted(() => {
   }
 }
 
+/* 页脚样式 */
+.app-footer {
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-light);
+  padding: 20px 0;
+  margin-top: 40px;
+}
+
+.footer-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.footer-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 14px;
+  transition: all var(--transition-normal);
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+.footer-link:hover {
+  color: var(--color-primary);
+  background: rgba(var(--color-primary-rgb), 0.1);
+  transform: translateY(-1px);
+}
+
+.footer-link .el-icon {
+  font-size: 16px;
+}
+
+.footer-copyright {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.footer-copyright p {
+  margin: 0;
+}
+
 /* 小屏幕处理 */
 @media (max-width: 900px) {
   .main-content {
@@ -1050,6 +1153,17 @@ onUnmounted(() => {
   
   .toolbar-content {
     padding: 0 12px;
+  }
+  
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+    padding: 0 12px;
+  }
+  
+  .footer-links {
+    justify-content: center;
+    flex-wrap: wrap;
   }
 }
 </style>

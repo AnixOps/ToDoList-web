@@ -144,7 +144,7 @@ export default {
     pendingCount: 'Pending'
   },
 
-  // 设置
+    // 设置
   settings: {
     title: 'Settings',
     appearance: 'Appearance',
@@ -154,7 +154,7 @@ export default {
     darkTheme: 'Dark',
     systemTheme: 'System',
     notifications: 'Notifications',
-    enableNotifications: 'Enable notifications',
+    enableNotifications: 'Enable Notifications',
     dataManagement: 'Data Management',
     exportData: 'Export Data',
     importData: 'Import Data',
@@ -166,6 +166,15 @@ export default {
     support: 'Support',
     privacyPolicy: 'Privacy Policy',
     termsOfService: 'Terms of Service'
+  },
+
+  // 链接
+  links: {
+    website: 'Official Website',
+    github: 'GitHub',
+    instagram: 'Instagram',
+    twitter: 'X (Twitter)',
+    socialMedia: 'Social Media'
   },
 
   // 错误消息
