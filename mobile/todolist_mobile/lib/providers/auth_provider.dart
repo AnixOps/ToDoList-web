@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../models/user.dart';
 import '../services/auth_service.dart';
-import '../services/api_service.dart';
+import '../services/offline_storage_service.dart';
 
 class AuthProvider with ChangeNotifier {
   final AuthService _authService = AuthService();
-  
+  final OfflineStorageService _offlineService = OfflineStorageService();
+
   User? _user;
   bool _isLoading = false;
   String? _error;
@@ -22,28 +23,62 @@ class AuthProvider with ChangeNotifier {
   // 初始化
   Future<void> init() async {
     if (_isInitialized) return;
-    
+
     _setLoading(true);
-    
+
     try {
       await _authService.init();
-      
-      // 检查是否有保存的用户信息
-      if (_authService.isLoggedIn) {
+      await _offlineService.init();
+
+      // 检查是否是离线模式
+      if (_offlineService.isOfflineMode) {
+        _user = await _offlineService.getOfflineUser();
+      } else if (_authService.isLoggedIn) {
+        // 在线模式，检查是否有保存的用户信息
         _user = _authService.currentUser;
-        
-        // 可选：验证Token是否仍然有效
-        // final result = await _authService.getCurrentUser();
-        // if (result.isSuccess) {
-        //   _user = result.data;
-        // } else {
-        //   await logout();
-        // }
       }
-      
+
       _isInitialized = true;
     } catch (e) {
-      _setError('初始化失败: ${e.toString()}');
+      _setError('Initialization failed: ${e.toString()}');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  // 初始化离线模式
+  Future<void> initOfflineMode() async {
+    _setLoading(true);
+    _clearError();
+
+    try {
+      // 先初始化离线服务
+      await _offlineService.init();
+
+      // 检查是否已经有离线用户
+      User? existingUser = await _offlineService.getOfflineUser();
+
+      if (existingUser != null) {
+        _user = existingUser;
+      } else {
+        // 创建新的离线用户
+        _user = await _offlineService.createOfflineUser(
+          name: '离线用户',
+          email: 'offline@todolist.app',
+        );
+      }
+
+      await _offlineService.setOfflineMode(true);
+      notifyListeners();
+    } catch (e) {
+      String errorMessage = '初始化离线模式失败';
+      if (e.toString().contains('databaseFactory not initialized')) {
+        errorMessage += ': 数据库未正确初始化，请重启应用后重试';
+      } else {
+        errorMessage += ': ${e.toString()}';
+      }
+      _setError(errorMessage);
+      rethrow;
     } finally {
       _setLoading(false);
     }
@@ -114,7 +149,7 @@ class AuthProvider with ChangeNotifier {
   // 登出
   Future<void> logout() async {
     _setLoading(true);
-    
+
     try {
       await _authService.logout();
       _user = null;
@@ -130,12 +165,12 @@ class AuthProvider with ChangeNotifier {
   // 刷新用户信息
   Future<void> refreshUserInfo() async {
     if (!isLoggedIn) return;
-    
+
     _setLoading(true);
-    
+
     try {
       final result = await _authService.getCurrentUser();
-      
+
       if (result.isSuccess && result.data != null) {
         _user = result.data;
         _clearError();
@@ -156,7 +191,7 @@ class AuthProvider with ChangeNotifier {
     String? email,
   }) async {
     if (!isLoggedIn) return false;
-    
+
     _setLoading(true);
     _clearError();
 

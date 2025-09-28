@@ -2,21 +2,45 @@ import 'package:flutter/material.dart';
 
 import '../models/todo_event.dart';
 import '../services/api_service.dart';
+import '../services/offline_storage_service.dart';
+import '../services/connectivity_service.dart';
+import '../services/sync_service.dart';
 import '../utils/constants.dart';
 
 class TodoProvider with ChangeNotifier {
   final ApiService _apiService = ApiService();
-  
+  final OfflineStorageService _offlineService = OfflineStorageService();
+  final ConnectivityService _connectivityService = ConnectivityService();
+  final SyncService _syncService = SyncService();
+
   List<TodoEvent> _events = [];
-  List<TodoTask> _tasks = [];
+  final List<TodoTask> _tasks = [];
   bool _isLoading = false;
   String? _error;
+  bool _isOfflineMode = false;
 
   // Getters
   List<TodoEvent> get events => _events;
   List<TodoTask> get tasks => _tasks;
   bool get isLoading => _isLoading;
   String? get error => _error;
+  bool get isOfflineMode => _isOfflineMode;
+
+  // 初始化
+  Future<void> init() async {
+    await _offlineService.init();
+    await _connectivityService.init();
+
+    _isOfflineMode = _offlineService.isOfflineMode;
+
+    // 监听网络状态变化
+    _connectivityService.connectionStream.listen((isConnected) {
+      if (isConnected && !_isOfflineMode) {
+        // 网络恢复时自动同步
+        _syncIfNeeded();
+      }
+    });
+  }
 
   // 获取指定事件的任务
   List<TodoTask> getTasksByEventId(int eventId) {
@@ -49,27 +73,39 @@ class TodoProvider with ChangeNotifier {
   }
 
   // 加载所有事件
-  Future<void> loadEvents() async {
+  Future<void> loadEvents({int? userId}) async {
     _setLoading(true);
     _clearError();
 
     try {
-      final response = await _apiService.get<List<dynamic>>(
-        ApiConstants.events,
-        fromJson: (json) => json as List<dynamic>,
-      );
-
-      if (response.isSuccess && response.data != null) {
-        _events = response.data!
-            .map((json) => TodoEvent.fromJson(json as Map<String, dynamic>))
-            .toList();
-        
-        // 按更新时间降序排列
+      if (_isOfflineMode) {
+        // 离线模式：从本地数据库加载
+        _events = await _offlineService.getOfflineEvents(userId: userId);
         _events.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
-        
         notifyListeners();
       } else {
-        _setError(response.message ?? '加载事件失败');
+        // 在线模式：从服务器加载
+        final response = await _apiService.get<List<dynamic>>(
+          ApiConstants.events,
+          fromJson: (json) => json as List<dynamic>,
+        );
+
+        if (response.isSuccess && response.data != null) {
+          _events = response.data!
+              .map((json) => TodoEvent.fromJson(json as Map<String, dynamic>))
+              .toList();
+
+          _events.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+
+          // 保存到本地数据库
+          for (final event in _events) {
+            await _offlineService.dbService.insertEvent(event);
+          }
+
+          notifyListeners();
+        } else {
+          _setError(response.message ?? '加载事件失败');
+        }
       }
     } catch (e) {
       _setError('加载事件异常: ${e.toString()}');
@@ -82,6 +118,7 @@ class TodoProvider with ChangeNotifier {
   Future<bool> createEvent({
     required String title,
     required String description,
+    required int userId,
     DateTime? dueDate,
     TaskPriority priority = TaskPriority.medium,
   }) async {
@@ -89,25 +126,45 @@ class TodoProvider with ChangeNotifier {
     _clearError();
 
     try {
-      final response = await _apiService.post<Map<String, dynamic>>(
-        ApiConstants.events,
-        data: {
-          'title': title,
-          'description': description,
-          if (dueDate != null) 'due_date': dueDate.toIso8601String(),
-          'priority': priority.name,
-        },
-        fromJson: (json) => json,
-      );
+      if (_isOfflineMode) {
+        // 离线模式：保存到本地数据库
+        final newEvent = await _offlineService.createOfflineEvent(
+          title: title,
+          description: description,
+          userId: userId,
+          dueDate: dueDate,
+          priority: priority,
+        );
 
-      if (response.isSuccess && response.data != null) {
-        final newEvent = TodoEvent.fromJson(response.data!);
         _events.insert(0, newEvent);
         notifyListeners();
         return true;
       } else {
-        _setError(response.message ?? '创建事件失败');
-        return false;
+        // 在线模式：发送到服务器
+        final response = await _apiService.post<Map<String, dynamic>>(
+          ApiConstants.events,
+          data: {
+            'title': title,
+            'description': description,
+            if (dueDate != null) 'due_date': dueDate.toIso8601String(),
+            'priority': priority.name,
+          },
+          fromJson: (json) => json,
+        );
+
+        if (response.isSuccess && response.data != null) {
+          final newEvent = TodoEvent.fromJson(response.data!);
+          _events.insert(0, newEvent);
+
+          // 同时保存到本地数据库
+          await _offlineService.dbService.insertEvent(newEvent);
+
+          notifyListeners();
+          return true;
+        } else {
+          _setError(response.message ?? '创建事件失败');
+          return false;
+        }
       }
     } catch (e) {
       _setError('创建事件异常: ${e.toString()}');
@@ -130,32 +187,60 @@ class TodoProvider with ChangeNotifier {
     _clearError();
 
     try {
-      final data = <String, dynamic>{};
-      if (title != null) data['title'] = title;
-      if (description != null) data['description'] = description;
-      if (dueDate != null) data['due_date'] = dueDate.toIso8601String();
-      if (priority != null) data['priority'] = priority.name;
-      if (isCompleted != null) data['is_completed'] = isCompleted;
+      final eventIndex = _events.indexWhere((event) => event.id == eventId);
+      if (eventIndex == -1) {
+        _setError('事件不存在');
+        return false;
+      }
 
-      final response = await _apiService.put<Map<String, dynamic>>(
-        '${ApiConstants.eventsById}/$eventId',
-        data: data,
-        fromJson: (json) => json,
+      final originalEvent = _events[eventIndex];
+      final updatedEvent = originalEvent.copyWith(
+        title: title ?? originalEvent.title,
+        description: description ?? originalEvent.description,
+        dueDate: dueDate ?? originalEvent.dueDate,
+        priority: priority ?? originalEvent.priority,
+        isCompleted: isCompleted ?? originalEvent.isCompleted,
       );
 
-      if (response.isSuccess && response.data != null) {
-        final updatedEvent = TodoEvent.fromJson(response.data!);
-        final index = _events.indexWhere((event) => event.id == eventId);
-        
-        if (index != -1) {
-          _events[index] = updatedEvent;
+      if (_isOfflineMode) {
+        // 离线模式：更新本地数据库
+        final success = await _offlineService.updateOfflineEvent(updatedEvent);
+        if (success) {
+          _events[eventIndex] = updatedEvent;
           notifyListeners();
+          return true;
+        } else {
+          _setError('更新事件失败');
+          return false;
         }
-        
-        return true;
       } else {
-        _setError(response.message ?? '更新事件失败');
-        return false;
+        // 在线模式：发送到服务器
+        final data = <String, dynamic>{};
+        if (title != null) data['title'] = title;
+        if (description != null) data['description'] = description;
+        if (dueDate != null) data['due_date'] = dueDate.toIso8601String();
+        if (priority != null) data['priority'] = priority.name;
+        if (isCompleted != null) data['is_completed'] = isCompleted;
+
+        final response = await _apiService.put<Map<String, dynamic>>(
+          '${ApiConstants.eventsById}/$eventId',
+          data: data,
+          fromJson: (json) => json,
+        );
+
+        if (response.isSuccess && response.data != null) {
+          final serverEvent = TodoEvent.fromJson(response.data!);
+          _events[eventIndex] = serverEvent;
+
+          // 同时更新本地数据库
+          await _offlineService.dbService.updateEvent(serverEvent);
+
+          notifyListeners();
+          return true;
+        } else {
+          _setError(response.message ?? '更新事件失败');
+          return false;
+        }
       }
     } catch (e) {
       _setError('更新事件异常: ${e.toString()}');
@@ -171,18 +256,37 @@ class TodoProvider with ChangeNotifier {
     _clearError();
 
     try {
-      final response = await _apiService.delete(
-        '${ApiConstants.eventsById}/$eventId',
-      );
-
-      if (response.isSuccess) {
-        _events.removeWhere((event) => event.id == eventId);
-        _tasks.removeWhere((task) => task.eventId == eventId);
-        notifyListeners();
-        return true;
+      if (_isOfflineMode) {
+        // 离线模式：从本地数据库删除
+        final success = await _offlineService.deleteOfflineEvent(eventId);
+        if (success) {
+          _events.removeWhere((event) => event.id == eventId);
+          _tasks.removeWhere((task) => task.eventId == eventId);
+          notifyListeners();
+          return true;
+        } else {
+          _setError('删除事件失败');
+          return false;
+        }
       } else {
-        _setError(response.message ?? '删除事件失败');
-        return false;
+        // 在线模式：从服务器删除
+        final response = await _apiService.delete(
+          '${ApiConstants.eventsById}/$eventId',
+        );
+
+        if (response.isSuccess) {
+          _events.removeWhere((event) => event.id == eventId);
+          _tasks.removeWhere((task) => task.eventId == eventId);
+
+          // 同时从本地数据库删除
+          await _offlineService.dbService.deleteEvent(eventId);
+
+          notifyListeners();
+          return true;
+        } else {
+          _setError(response.message ?? '删除事件失败');
+          return false;
+        }
       }
     } catch (e) {
       _setError('删除事件异常: ${e.toString()}');
@@ -193,32 +297,52 @@ class TodoProvider with ChangeNotifier {
   }
 
   // 加载指定事件的任务
-  Future<void> loadTasks(int eventId) async {
+  Future<void> loadTasks(int eventId, {int? userId}) async {
     _setLoading(true);
     _clearError();
 
     try {
-      final response = await _apiService.get<List<dynamic>>(
-        ApiConstants.tasks,
-        queryParams: {'event_id': eventId},
-        fromJson: (json) => json as List<dynamic>,
-      );
+      if (_isOfflineMode) {
+        // 离线模式：从本地数据库加载
+        final eventTasks = await _offlineService.getOfflineTasks(
+          eventId: eventId,
+          userId: userId,
+        );
 
-      if (response.isSuccess && response.data != null) {
-        final eventTasks = response.data!
-            .map((json) => TodoTask.fromJson(json as Map<String, dynamic>))
-            .toList();
-        
         // 移除旧的任务，添加新的任务
         _tasks.removeWhere((task) => task.eventId == eventId);
         _tasks.addAll(eventTasks);
-        
-        // 按创建时间排序
+
         _tasks.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-        
         notifyListeners();
       } else {
-        _setError(response.message ?? '加载任务失败');
+        // 在线模式：从服务器加载
+        final response = await _apiService.get<List<dynamic>>(
+          ApiConstants.tasks,
+          queryParams: {'event_id': eventId},
+          fromJson: (json) => json as List<dynamic>,
+        );
+
+        if (response.isSuccess && response.data != null) {
+          final eventTasks = response.data!
+              .map((json) => TodoTask.fromJson(json as Map<String, dynamic>))
+              .toList();
+
+          // 移除旧的任务，添加新的任务
+          _tasks.removeWhere((task) => task.eventId == eventId);
+          _tasks.addAll(eventTasks);
+
+          _tasks.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
+          // 保存到本地数据库
+          for (final task in eventTasks) {
+            await _offlineService.dbService.insertTask(task);
+          }
+
+          notifyListeners();
+        } else {
+          _setError(response.message ?? '加载任务失败');
+        }
       }
     } catch (e) {
       _setError('加载任务异常: ${e.toString()}');
@@ -227,129 +351,63 @@ class TodoProvider with ChangeNotifier {
     }
   }
 
-  // 创建任务
-  Future<bool> createTask({
-    required int eventId,
-    required String title,
-    required String description,
-    DateTime? dueDate,
-    TaskPriority priority = TaskPriority.medium,
-  }) async {
+  // 切换在线/离线模式
+  Future<void> switchMode({bool offline = false}) async {
     _setLoading(true);
-    _clearError();
 
     try {
-      final response = await _apiService.post<Map<String, dynamic>>(
-        ApiConstants.tasks,
-        data: {
-          'event_id': eventId,
-          'title': title,
-          'description': description,
-          if (dueDate != null) 'due_date': dueDate.toIso8601String(),
-          'priority': priority.name,
-        },
-        fromJson: (json) => json,
-      );
-
-      if (response.isSuccess && response.data != null) {
-        final newTask = TodoTask.fromJson(response.data!);
-        _tasks.insert(0, newTask);
-        notifyListeners();
-        return true;
-      } else {
-        _setError(response.message ?? '创建任务失败');
-        return false;
-      }
-    } catch (e) {
-      _setError('创建任务异常: ${e.toString()}');
-      return false;
-    } finally {
-      _setLoading(false);
-    }
-  }
-
-  // 更新任务
-  Future<bool> updateTask({
-    required int taskId,
-    String? title,
-    String? description,
-    DateTime? dueDate,
-    TaskPriority? priority,
-    TaskStatus? status,
-  }) async {
-    _setLoading(true);
-    _clearError();
-
-    try {
-      final data = <String, dynamic>{};
-      if (title != null) data['title'] = title;
-      if (description != null) data['description'] = description;
-      if (dueDate != null) data['due_date'] = dueDate.toIso8601String();
-      if (priority != null) data['priority'] = priority.name;
-      if (status != null) data['status'] = status.name;
-
-      final response = await _apiService.put<Map<String, dynamic>>(
-        '${ApiConstants.tasksById}/$taskId',
-        data: data,
-        fromJson: (json) => json,
-      );
-
-      if (response.isSuccess && response.data != null) {
-        final updatedTask = TodoTask.fromJson(response.data!);
-        final index = _tasks.indexWhere((task) => task.id == taskId);
-        
-        if (index != -1) {
-          _tasks[index] = updatedTask;
-          notifyListeners();
+      if (offline) {
+        // 切换到离线模式
+        final syncResult = await _syncService.switchToOfflineMode();
+        if (syncResult.success) {
+          _isOfflineMode = true;
+          await loadEvents(); // 重新加载数据
+        } else {
+          _setError(syncResult.message);
         }
-        
-        return true;
       } else {
-        _setError(response.message ?? '更新任务失败');
-        return false;
+        // 切换到在线模式需要登录信息，这里只是设置标志
+        _isOfflineMode = false;
+        await _offlineService.setOfflineMode(false);
       }
     } catch (e) {
-      _setError('更新任务异常: ${e.toString()}');
-      return false;
+      _setError('切换模式失败: ${e.toString()}');
     } finally {
       _setLoading(false);
     }
   }
 
-  // 删除任务
-  Future<bool> deleteTask(int taskId) async {
+  // 同步数据
+  Future<void> syncData() async {
+    if (_isOfflineMode || !_connectivityService.isConnected) {
+      return;
+    }
+
     _setLoading(true);
-    _clearError();
 
     try {
-      final response = await _apiService.delete(
-        '${ApiConstants.tasksById}/$taskId',
-      );
-
-      if (response.isSuccess) {
-        _tasks.removeWhere((task) => task.id == taskId);
-        notifyListeners();
-        return true;
+      final syncResult = await _syncService.performFullSync();
+      if (syncResult.success) {
+        await loadEvents(); // 重新加载数据
       } else {
-        _setError(response.message ?? '删除任务失败');
-        return false;
+        _setError(syncResult.message);
       }
     } catch (e) {
-      _setError('删除任务异常: ${e.toString()}');
-      return false;
+      _setError('同步失败: ${e.toString()}');
     } finally {
       _setLoading(false);
     }
   }
 
-  // 切换任务状态
-  Future<bool> toggleTaskStatus(int taskId) async {
-    final task = _tasks.firstWhere((t) => t.id == taskId);
-    final newStatus = task.status == TaskStatus.completed 
-        ? TaskStatus.pending 
-        : TaskStatus.completed;
-    
-    return await updateTask(taskId: taskId, status: newStatus);
+  // 自动同步（如果需要）
+  Future<void> _syncIfNeeded() async {
+    if (!_isOfflineMode && _connectivityService.isConnected) {
+      final hasUnsyncedData =
+          (await _offlineService.getUnsyncedData()).isNotEmpty;
+      if (hasUnsyncedData) {
+        await syncData();
+      }
+    }
   }
 
   // 刷新数据
@@ -386,5 +444,11 @@ class TodoProvider with ChangeNotifier {
     _isLoading = false;
     _error = null;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _connectivityService.dispose();
+    super.dispose();
   }
 }

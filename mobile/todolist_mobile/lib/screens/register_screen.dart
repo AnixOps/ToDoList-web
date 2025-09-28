@@ -19,10 +19,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  
-  bool _obscurePassword = true;
-  bool _obscureConfirmPassword = true;
-  bool _agreeToTerms = false;
+
+  final bool _agreeToTerms = false;
 
   @override
   void dispose() {
@@ -43,7 +41,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
 
     final authProvider = context.read<AuthProvider>();
-    
+
     final success = await authProvider.register(
       name: _nameController.text.trim(),
       email: _emailController.text.trim(),
@@ -55,7 +53,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(authProvider.error ?? '注册失败'),
+          content: Text(authProvider.error ?? 'Registration failed'),
           backgroundColor: AppColors.error,
         ),
       );
@@ -86,7 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('创建账户', style: AppTextStyles.largeTitle),
+                        const Text('创建账户', style: AppTextStyles.largeTitle),
                         const SizedBox(height: AppSpacing.sm),
                         Text(
                           '填写以下信息创建您的账户',
@@ -95,7 +93,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                         const SizedBox(height: AppSpacing.xl),
-                        
+
                         // 姓名输入框
                         TextFormField(
                           controller: _nameController,
@@ -112,14 +110,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             return null;
                           },
                         ),
-                        
+
                         const SizedBox(height: AppSpacing.md),
-                        
+
                         // 其他表单字段...
                         // 为了节省空间，这里只展示基本结构
-                        
+
                         const SizedBox(height: AppSpacing.xl),
-                        
+
                         LoadingButton(
                           onPressed: _register,
                           text: '注册',
@@ -129,7 +127,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                 ),
-                
                 if (authProvider.isLoading) const LoadingWidget(),
               ],
             );

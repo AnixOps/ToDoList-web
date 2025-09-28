@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'dart:ui' as ui;
 
 import 'providers/auth_provider.dart';
 import 'providers/todo_provider.dart';
+import 'l10n/generated/app_localizations.dart';
 import 'screens/splash_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
@@ -35,10 +37,38 @@ class ToDoListApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: _buildTheme(),
             routerConfig: _router,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en', ''), // English
+              Locale('zh', ''), // Chinese
+            ],
+            locale: _determineLocale(),
           );
         },
       ),
     );
+  }
+
+  // 确定应用程序语言环境
+  Locale? _determineLocale() {
+    // 获取系统语言
+    final systemLocale = ui.PlatformDispatcher.instance.locale;
+
+    // 支持的语言列表
+    const supportedLanguages = ['en', 'zh'];
+
+    // 检查系统语言是否在支持列表中
+    if (supportedLanguages.contains(systemLocale.languageCode)) {
+      return Locale(systemLocale.languageCode);
+    }
+
+    // 默认返回英文
+    return const Locale('en');
   }
 
   ThemeData _buildTheme() {

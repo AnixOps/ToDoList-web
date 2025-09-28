@@ -1,0 +1,296 @@
+{
+  "@@locale": "en",
+  "appTitle": "TodoList",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  
+  "todoList": "Todo List",
+  "@todoList": {
+    "description": "Title for todo list screen"
+  },
+  
+  "addTask": "Add Task",
+  "@addTask": {
+    "description": "Button text to add a new task"
+  },
+  
+  "editTask": "Edit Task",
+  "@editTask": {
+    "description": "Title for editing a task"
+  },
+  
+  "taskTitle": "Task Title",
+  "@taskTitle": {
+    "description": "Label for task title input"
+  },
+  
+  "taskDescription": "Task Description",
+  "@taskDescription": {
+    "description": "Label for task description input"
+  },
+  
+  "dueDate": "Due Date",
+  "@dueDate": {
+    "description": "Label for due date"
+  },
+  
+  "priority": "Priority",
+  "@priority": {
+    "description": "Label for priority selection"
+  },
+  
+  "high": "High",
+  "@high": {
+    "description": "High priority label"
+  },
+  
+  "medium": "Medium",
+  "@medium": {
+    "description": "Medium priority label"
+  },
+  
+  "low": "Low",
+  "@low": {
+    "description": "Low priority label"
+  },
+  
+  "pending": "Pending",
+  "@pending": {
+    "description": "Pending tasks tab"
+  },
+  
+  "completed": "Completed",
+  "@completed": {
+    "description": "Completed tasks tab"
+  },
+  
+  "overdue": "Overdue",
+  "@overdue": {
+    "description": "Overdue tasks tab"
+  },
+  
+  "noTasks": "No tasks",
+  "@noTasks": {
+    "description": "Message when there are no tasks"
+  },
+  
+  "loadFailed": "Load failed",
+  "@loadFailed": {
+    "description": "Error message when loading fails"
+  },
+  
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry button text"
+  },
+  
+  "save": "Save",
+  "@save": {
+    "description": "Save button text"
+  },
+  
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  
+  "delete": "Delete",
+  "@delete": {
+    "description": "Delete button text"
+  },
+  
+  "edit": "Edit",
+  "@edit": {
+    "description": "Edit button text"
+  },
+  
+  "confirmDelete": "Confirm Delete",
+  "@confirmDelete": {
+    "description": "Title for delete confirmation dialog"
+  },
+  
+  "confirmDeleteMessage": "Are you sure you want to delete \"{taskTitle}\"?",
+  "@confirmDeleteMessage": {
+    "description": "Message for delete confirmation dialog",
+    "placeholders": {
+      "taskTitle": {
+        "type": "String",
+        "example": "Buy groceries"
+      }
+    }
+  },
+  
+  "taskCreatedSuccess": "Task created successfully",
+  "@taskCreatedSuccess": {
+    "description": "Success message when task is created"
+  },
+  
+  "taskUpdatedSuccess": "Task updated successfully",
+  "@taskUpdatedSuccess": {
+    "description": "Success message when task is updated"
+  },
+  
+  "taskDeletedSuccess": "Task deleted successfully",
+  "@taskDeletedSuccess": {
+    "description": "Success message when task is deleted"
+  },
+  
+  "createFailed": "Create failed",
+  "@createFailed": {
+    "description": "Error message when creation fails"
+  },
+  
+  "updateFailed": "Update failed",
+  "@updateFailed": {
+    "description": "Error message when update fails"
+  },
+  
+  "deleteFailed": "Delete failed",
+  "@deleteFailed": {
+    "description": "Error message when deletion fails"
+  },
+  
+  "today": "Today",
+  "@today": {
+    "description": "Today label for dates"
+  },
+  
+  "tomorrow": "Tomorrow",
+  "@tomorrow": {
+    "description": "Tomorrow label for dates"
+  },
+  
+  "yesterday": "Yesterday",
+  "@yesterday": {
+    "description": "Yesterday label for dates"
+  },
+  
+  "daysLater": "{count} days later",
+  "@daysLater": {
+    "description": "Days later label",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  
+  "daysAgo": "{count} days ago",
+  "@daysAgo": {
+    "description": "Days ago label",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  
+  "selectDate": "Select Date",
+  "@selectDate": {
+    "description": "Placeholder for date selection"
+  },
+  
+  "onlineMode": "Online Mode",
+  "@onlineMode": {
+    "description": "Online mode tooltip"
+  },
+  
+  "offlineMode": "Offline Mode",
+  "@offlineMode": {
+    "description": "Offline mode tooltip"
+  },
+  
+  "switchMode": "Switch Mode",
+  "@switchMode": {
+    "description": "Title for mode switch dialog"
+  },
+  
+  "switchToOnlineMode": "Currently in offline mode, switch to online mode?",
+  "@switchToOnlineMode": {
+    "description": "Message for switching to online mode"
+  },
+  
+  "switchToOfflineMode": "Currently in online mode, switch to offline mode?",
+  "@switchToOfflineMode": {
+    "description": "Message for switching to offline mode"
+  },
+  
+  "switchButton": "Switch",
+  "@switchButton": {
+    "description": "Switch button text"
+  },
+  
+  "loading": "Loading...",
+  "@loading": {
+    "description": "Loading message"
+  },
+  
+  "addSubTask": "Add Subtask",
+  "@addSubTask": {
+    "description": "Button text to add a subtask"
+  },
+  
+  "subTasks": "Subtasks",
+  "@subTasks": {
+    "description": "Label for subtasks section"
+  },
+  
+  "subTasksCount": "{completed}/{total} subtasks completed",
+  "@subTasksCount": {
+    "description": "Subtasks completion count",
+    "placeholders": {
+      "completed": {
+        "type": "int",
+        "example": "2"
+      },
+      "total": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  
+  "pleaseEnterTaskTitle": "Please enter task title",
+  "@pleaseEnterTaskTitle": {
+    "description": "Validation message for empty task title"
+  },
+  
+  "taskTitleHint": "Enter task title",
+  "@taskTitleHint": {
+    "description": "Hint text for task title input"
+  },
+  
+  "taskDescriptionHint": "Enter task description (optional)",
+  "@taskDescriptionHint": {
+    "description": "Hint text for task description input"
+  },
+  
+  "viewDetails": "View Details: {taskTitle}",
+  "@viewDetails": {
+    "description": "Message for viewing task details",
+    "placeholders": {
+      "taskTitle": {
+        "type": "String",
+        "example": "Buy groceries"
+      }
+    }
+  },
+  
+  "operationFailed": "Operation failed",
+  "@operationFailed": {
+    "description": "Generic operation failed message"
+  },
+  
+  "profile": "Profile",
+  "@profile": {
+    "description": "Profile tab label"
+  },
+  
+  "tasks": "Tasks",
+  "@tasks": {
+    "description": "Tasks tab label"
+  }
+}

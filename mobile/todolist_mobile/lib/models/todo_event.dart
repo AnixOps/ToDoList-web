@@ -19,7 +19,7 @@ class TodoEvent {
   @JsonKey(name: 'is_completed')
   final bool isCompleted;
   final TaskPriority priority;
-  
+
   // 关联的任务列表
   final List<TodoTask>? tasks;
 
@@ -36,7 +36,8 @@ class TodoEvent {
     this.tasks,
   });
 
-  factory TodoEvent.fromJson(Map<String, dynamic> json) => _$TodoEventFromJson(json);
+  factory TodoEvent.fromJson(Map<String, dynamic> json) =>
+      _$TodoEventFromJson(json);
   Map<String, dynamic> toJson() => _$TodoEventToJson(this);
 
   TodoEvent copyWith({
@@ -68,8 +69,9 @@ class TodoEvent {
   // 获取任务完成进度
   double get progress {
     if (tasks == null || tasks!.isEmpty) return 0.0;
-    
-    final completedTasks = tasks!.where((task) => task.status == TaskStatus.completed).length;
+
+    final completedTasks =
+        tasks!.where((task) => task.status == TaskStatus.completed).length;
     return completedTasks / tasks!.length;
   }
 
@@ -113,6 +115,8 @@ class TodoTask {
   final String description;
   @JsonKey(name: 'event_id')
   final int eventId;
+  @JsonKey(name: 'parent_task_id')
+  final int? parentTaskId;
   @JsonKey(name: 'user_id')
   final int userId;
   @JsonKey(name: 'created_at')
@@ -123,21 +127,30 @@ class TodoTask {
   final DateTime? dueDate;
   final TaskStatus status;
   final TaskPriority priority;
+  @JsonKey(name: 'sort_order')
+  final int sortOrder;
+
+  // 子任务列表
+  final List<TodoTask>? subTasks;
 
   const TodoTask({
     required this.id,
     required this.title,
     required this.description,
     required this.eventId,
+    this.parentTaskId,
     required this.userId,
     required this.createdAt,
     required this.updatedAt,
     this.dueDate,
     this.status = TaskStatus.pending,
     this.priority = TaskPriority.medium,
+    this.sortOrder = 0,
+    this.subTasks,
   });
 
-  factory TodoTask.fromJson(Map<String, dynamic> json) => _$TodoTaskFromJson(json);
+  factory TodoTask.fromJson(Map<String, dynamic> json) =>
+      _$TodoTaskFromJson(json);
   Map<String, dynamic> toJson() => _$TodoTaskToJson(this);
 
   TodoTask copyWith({
@@ -145,24 +158,30 @@ class TodoTask {
     String? title,
     String? description,
     int? eventId,
+    int? parentTaskId,
     int? userId,
     DateTime? createdAt,
     DateTime? updatedAt,
     DateTime? dueDate,
     TaskStatus? status,
     TaskPriority? priority,
+    int? sortOrder,
+    List<TodoTask>? subTasks,
   }) {
     return TodoTask(
       id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
       eventId: eventId ?? this.eventId,
+      parentTaskId: parentTaskId ?? this.parentTaskId,
       userId: userId ?? this.userId,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       dueDate: dueDate ?? this.dueDate,
       status: status ?? this.status,
       priority: priority ?? this.priority,
+      sortOrder: sortOrder ?? this.sortOrder,
+      subTasks: subTasks ?? this.subTasks,
     );
   }
 
@@ -177,6 +196,33 @@ class TodoTask {
 
   // 检查是否已取消
   bool get isCancelled => status == TaskStatus.cancelled;
+
+  // 检查是否是主任务（没有父任务）
+  bool get isMainTask => parentTaskId == null;
+
+  // 检查是否是子任务
+  bool get isSubTask => parentTaskId != null;
+
+  // 获取子任务完成进度
+  double get subTaskProgress {
+    if (subTasks == null || subTasks!.isEmpty) return 0.0;
+
+    final completedSubTasks =
+        subTasks!.where((task) => task.isCompleted).length;
+    return completedSubTasks / subTasks!.length;
+  }
+
+  // 获取待完成子任务数量
+  int get pendingSubTasksCount {
+    if (subTasks == null) return 0;
+    return subTasks!.where((task) => !task.isCompleted).length;
+  }
+
+  // 获取已完成子任务数量
+  int get completedSubTasksCount {
+    if (subTasks == null) return 0;
+    return subTasks!.where((task) => task.isCompleted).length;
+  }
 
   @override
   bool operator ==(Object other) {

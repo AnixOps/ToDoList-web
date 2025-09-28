@@ -1,138 +1,138 @@
-# ToDoList Flutteré¡¹ç›®å¿«é€Ÿå¯åŠ¨è„šæœ¬
-# è¿è¡Œæ­¤è„šæœ¬æ¥å¿«é€Ÿè®¾ç½®å’Œå¯åŠ¨Flutteré¡¹ç›®
+# ToDoList FlutterÏîÄ¿¿ìËÙÆô¶¯½Å±¾
+# ÔËĞĞ´Ë½Å±¾À´¿ìËÙÉèÖÃºÍÆô¶¯FlutterÏîÄ¿
 
-Write-Host "ğŸš€ ToDoList Flutteré¡¹ç›®å¯åŠ¨è„šæœ¬" -ForegroundColor Green
+Write-Host "? ToDoList FlutterÏîÄ¿Æô¶¯½Å±¾" -ForegroundColor Green
 Write-Host "=================================" -ForegroundColor Green
 
-# æ£€æŸ¥Flutteræ˜¯å¦å·²å®‰è£…
-Write-Host "1. æ£€æŸ¥Flutterç¯å¢ƒ..." -ForegroundColor Yellow
+# ¼ì²éFlutterÊÇ·ñÒÑ°²×°
+Write-Host "1. ¼ì²éFlutter»·¾³..." -ForegroundColor Yellow
 $flutterInstalled = $false
 
 try {
     $null = Get-Command flutter -ErrorAction Stop
-    Write-Host "âœ… Flutterå·²å®‰è£…" -ForegroundColor Green
+    Write-Host "? FlutterÒÑ°²×°" -ForegroundColor Green
     flutter --version
     $flutterInstalled = $true
 } catch {
-    Write-Host "âŒ Flutteræœªå®‰è£…" -ForegroundColor Red
+    Write-Host "? FlutterÎ´°²×°" -ForegroundColor Red
     
-    Write-Host "è¯·é€‰æ‹©ï¼š" -ForegroundColor Yellow
-    Write-Host "1. è¿è¡ŒFlutterå®‰è£…è„šæœ¬" -ForegroundColor White
-    Write-Host "2. æ‰‹åŠ¨å®‰è£…Flutter" -ForegroundColor White
-    Write-Host "3. é€€å‡º" -ForegroundColor White
+    Write-Host "ÇëÑ¡Ôñ£º" -ForegroundColor Yellow
+    Write-Host "1. ÔËĞĞFlutter°²×°½Å±¾" -ForegroundColor White
+    Write-Host "2. ÊÖ¶¯°²×°Flutter" -ForegroundColor White
+    Write-Host "3. ÍË³ö" -ForegroundColor White
     
-    $installChoice = Read-Host "è¯·é€‰æ‹© (1-3)"
+    $installChoice = Read-Host "ÇëÑ¡Ôñ (1-3)"
     
     switch ($installChoice) {
         "1" {
             if (Test-Path "install_flutter_simple.ps1") {
-                Write-Host "è¿è¡ŒFlutterç®€æ˜“å®‰è£…è„šæœ¬..." -ForegroundColor Yellow
+                Write-Host "ÔËĞĞFlutter¼òÒ×°²×°½Å±¾..." -ForegroundColor Yellow
                 .\install_flutter_simple.ps1
                 
-                Write-Host "è¯·é‡å¯PowerShellåé‡æ–°è¿è¡Œæ­¤è„šæœ¬" -ForegroundColor Yellow
-                Read-Host "æŒ‰Enteré”®é€€å‡º"
+                Write-Host "ÇëÖØÆôPowerShellºóÖØĞÂÔËĞĞ´Ë½Å±¾" -ForegroundColor Yellow
+                Read-Host "°´Enter¼üÍË³ö"
                 exit
             } else {
-                Write-Host "æ‰¾ä¸åˆ°å®‰è£…è„šæœ¬" -ForegroundColor Red
+                Write-Host "ÕÒ²»µ½°²×°½Å±¾" -ForegroundColor Red
                 exit
             }
         }
         "2" {
-            Write-Host "è¯·æ‰‹åŠ¨å®‰è£…Flutter SDK:" -ForegroundColor Yellow
-            Write-Host "è®¿é—®: https://flutter.dev/docs/get-started/install/windows" -ForegroundColor Cyan
-            Read-Host "æŒ‰Enteré”®é€€å‡º"
+            Write-Host "ÇëÊÖ¶¯°²×°Flutter SDK:" -ForegroundColor Yellow
+            Write-Host "·ÃÎÊ: https://flutter.dev/docs/get-started/install/windows" -ForegroundColor Cyan
+            Read-Host "°´Enter¼üÍË³ö"
             exit
         }
         "3" {
             exit
         }
         default {
-            Write-Host "æ— æ•ˆé€‰æ‹©ï¼Œé€€å‡º" -ForegroundColor Red
+            Write-Host "ÎŞĞ§Ñ¡Ôñ£¬ÍË³ö" -ForegroundColor Red
             exit
         }
     }
 }
 
-# è¿›å…¥é¡¹ç›®ç›®å½•
-Write-Host "`n2. è¿›å…¥é¡¹ç›®ç›®å½•..." -ForegroundColor Yellow
+# ½øÈëÏîÄ¿Ä¿Â¼
+Write-Host "`n2. ½øÈëÏîÄ¿Ä¿Â¼..." -ForegroundColor Yellow
 if (!(Test-Path "todolist_mobile")) {
-    Write-Host "åˆ›å»ºFlutteré¡¹ç›®..." -ForegroundColor Yellow
+    Write-Host "´´½¨FlutterÏîÄ¿..." -ForegroundColor Yellow
     flutter create todolist_mobile
-    Write-Host "âœ… é¡¹ç›®åˆ›å»ºå®Œæˆ" -ForegroundColor Green
+    Write-Host "? ÏîÄ¿´´½¨Íê³É" -ForegroundColor Green
 }
 
 Set-Location todolist_mobile
 
-# æ£€æŸ¥pubspec.yamlæ˜¯å¦å­˜åœ¨æˆ‘ä»¬çš„é…ç½®
+# ¼ì²épubspec.yamlÊÇ·ñ´æÔÚÎÒÃÇµÄÅäÖÃ
 if (Test-Path "../pubspec.yaml") {
-    Write-Host "å¤åˆ¶é¡¹ç›®é…ç½®æ–‡ä»¶..." -ForegroundColor Yellow
+    Write-Host "¸´ÖÆÏîÄ¿ÅäÖÃÎÄ¼ş..." -ForegroundColor Yellow
     Copy-Item "../pubspec.yaml" "pubspec.yaml" -Force
-    Write-Host "âœ… é…ç½®æ–‡ä»¶å·²æ›´æ–°" -ForegroundColor Green
+    Write-Host "? ÅäÖÃÎÄ¼şÒÑ¸üĞÂ" -ForegroundColor Green
 }
 
-# å®‰è£…ä¾èµ–
-Write-Host "`n3. å®‰è£…é¡¹ç›®ä¾èµ–..." -ForegroundColor Yellow
+# °²×°ÒÀÀµ
+Write-Host "`n3. °²×°ÏîÄ¿ÒÀÀµ..." -ForegroundColor Yellow
 flutter pub get
-Write-Host "âœ… ä¾èµ–å®‰è£…å®Œæˆ" -ForegroundColor Green
+Write-Host "? ÒÀÀµ°²×°Íê³É" -ForegroundColor Green
 
-# æ£€æŸ¥å¯ç”¨è®¾å¤‡
-Write-Host "`n4. æ£€æŸ¥å¯ç”¨è®¾å¤‡..." -ForegroundColor Yellow
+# ¼ì²é¿ÉÓÃÉè±¸
+Write-Host "`n4. ¼ì²é¿ÉÓÃÉè±¸..." -ForegroundColor Yellow
 flutter devices
 
-# è¿è¡Œä»£ç ç”Ÿæˆ
-Write-Host "`n5. ç”Ÿæˆä»£ç æ–‡ä»¶..." -ForegroundColor Yellow
+# ÔËĞĞ´úÂëÉú³É
+Write-Host "`n5. Éú³É´úÂëÎÄ¼ş..." -ForegroundColor Yellow
 try {
     flutter packages pub run build_runner build --delete-conflicting-outputs
-    Write-Host "âœ… ä»£ç ç”Ÿæˆå®Œæˆ" -ForegroundColor Green
+    Write-Host "? ´úÂëÉú³ÉÍê³É" -ForegroundColor Green
 } catch {
-    Write-Host "âš ï¸ ä»£ç ç”Ÿæˆè·³è¿‡ï¼ˆå¯èƒ½æ˜¯é¦–æ¬¡è¿è¡Œï¼‰" -ForegroundColor Yellow
+    Write-Host "?? ´úÂëÉú³ÉÌø¹ı£¨¿ÉÄÜÊÇÊ×´ÎÔËĞĞ£©" -ForegroundColor Yellow
 }
 
-Write-Host "`nğŸ“± é¡¹ç›®å‡†å¤‡å°±ç»ªï¼" -ForegroundColor Green
+Write-Host "`n? ÏîÄ¿×¼±¸¾ÍĞ÷£¡" -ForegroundColor Green
 Write-Host "=================================" -ForegroundColor Green
-Write-Host "é€‰æ‹©è¿è¡Œæ–¹å¼ï¼š" -ForegroundColor White
-Write-Host "1. Chromeæµè§ˆå™¨ï¼ˆæ¨èç”¨äºå¼€å‘æµ‹è¯•ï¼‰" -ForegroundColor Cyan
-Write-Host "2. Androidæ¨¡æ‹Ÿå™¨" -ForegroundColor Cyan
-Write-Host "3. iOSæ¨¡æ‹Ÿå™¨ï¼ˆéœ€è¦macOSå’ŒXcodeï¼‰" -ForegroundColor Cyan
-Write-Host "4. è¿æ¥çš„è®¾å¤‡" -ForegroundColor Cyan
-Write-Host "5. é€€å‡º" -ForegroundColor Cyan
+Write-Host "Ñ¡ÔñÔËĞĞ·½Ê½£º" -ForegroundColor White
+Write-Host "1. Chromeä¯ÀÀÆ÷£¨ÍÆ¼öÓÃÓÚ¿ª·¢²âÊÔ£©" -ForegroundColor Cyan
+Write-Host "2. AndroidÄ£ÄâÆ÷" -ForegroundColor Cyan
+Write-Host "3. iOSÄ£ÄâÆ÷£¨ĞèÒªmacOSºÍXcode£©" -ForegroundColor Cyan
+Write-Host "4. Á¬½ÓµÄÉè±¸" -ForegroundColor Cyan
+Write-Host "5. ÍË³ö" -ForegroundColor Cyan
 
 do {
-    $choice = Read-Host "`nè¯·é€‰æ‹© (1-5)"
+    $choice = Read-Host "`nÇëÑ¡Ôñ (1-5)"
     
     switch ($choice) {
         "1" {
-            Write-Host "å¯åŠ¨Chromeæµè§ˆå™¨ç‰ˆæœ¬..." -ForegroundColor Green
+            Write-Host "Æô¶¯Chromeä¯ÀÀÆ÷°æ±¾..." -ForegroundColor Green
             flutter run -d chrome
             break
         }
         "2" {
-            Write-Host "å¯åŠ¨Androidæ¨¡æ‹Ÿå™¨ç‰ˆæœ¬..." -ForegroundColor Green
+            Write-Host "Æô¶¯AndroidÄ£ÄâÆ÷°æ±¾..." -ForegroundColor Green
             flutter run -d android
             break
         }
         "3" {
-            Write-Host "å¯åŠ¨iOSæ¨¡æ‹Ÿå™¨ç‰ˆæœ¬..." -ForegroundColor Green
+            Write-Host "Æô¶¯iOSÄ£ÄâÆ÷°æ±¾..." -ForegroundColor Green
             flutter run -d ios
             break
         }
         "4" {
-            Write-Host "å¯åŠ¨è®¾å¤‡ç‰ˆæœ¬..." -ForegroundColor Green
+            Write-Host "Æô¶¯Éè±¸°æ±¾..." -ForegroundColor Green
             flutter run
             break
         }
         "5" {
-            Write-Host "é€€å‡ºè„šæœ¬" -ForegroundColor Yellow
+            Write-Host "ÍË³ö½Å±¾" -ForegroundColor Yellow
             break
         }
         default {
-            Write-Host "æ— æ•ˆé€‰æ‹©ï¼Œè¯·é‡æ–°è¾“å…¥" -ForegroundColor Red
+            Write-Host "ÎŞĞ§Ñ¡Ôñ£¬ÇëÖØĞÂÊäÈë" -ForegroundColor Red
         }
     }
 } while ($choice -notin @("1", "2", "3", "4", "5"))
 
-Write-Host "`nå¼€å‘æç¤ºï¼š" -ForegroundColor Green
-Write-Host "- æŒ‰ 'r' é”®çƒ­é‡è½½" -ForegroundColor White
-Write-Host "- æŒ‰ 'R' é”®çƒ­é‡å¯" -ForegroundColor White
-Write-Host "- æŒ‰ 'q' é”®é€€å‡º" -ForegroundColor White
-Write-Host "- ä½¿ç”¨VS Code Flutteræ’ä»¶è·å¾—æ›´å¥½çš„å¼€å‘ä½“éªŒ" -ForegroundColor White
+Write-Host "`n¿ª·¢ÌáÊ¾£º" -ForegroundColor Green
+Write-Host "- °´ 'r' ¼üÈÈÖØÔØ" -ForegroundColor White
+Write-Host "- °´ 'R' ¼üÈÈÖØÆô" -ForegroundColor White
+Write-Host "- °´ 'q' ¼üÍË³ö" -ForegroundColor White
+Write-Host "- Ê¹ÓÃVS Code Flutter²å¼ş»ñµÃ¸üºÃµÄ¿ª·¢ÌåÑé" -ForegroundColor White
