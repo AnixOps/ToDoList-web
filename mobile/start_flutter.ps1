@@ -6,28 +6,50 @@ Write-Host "=================================" -ForegroundColor Green
 
 # 检查Flutter是否已安装
 Write-Host "1. 检查Flutter环境..." -ForegroundColor Yellow
+$flutterInstalled = $false
+
 try {
-    $flutterVersion = flutter --version 2>$null
-    if ($flutterVersion) {
-        Write-Host "✅ Flutter已安装" -ForegroundColor Green
-        flutter --version
-    }
+    $null = Get-Command flutter -ErrorAction Stop
+    Write-Host "✅ Flutter已安装" -ForegroundColor Green
+    flutter --version
+    $flutterInstalled = $true
 } catch {
-    Write-Host "❌ Flutter未安装，正在安装..." -ForegroundColor Red
+    Write-Host "❌ Flutter未安装" -ForegroundColor Red
     
-    # 检查是否有安装脚本
-    if (Test-Path "install_flutter.ps1") {
-        Write-Host "运行Flutter安装脚本..." -ForegroundColor Yellow
-        .\install_flutter.ps1
-        
-        Write-Host "请重启PowerShell后重新运行此脚本" -ForegroundColor Yellow
-        Read-Host "按Enter键退出"
-        exit
-    } else {
-        Write-Host "请先手动安装Flutter SDK" -ForegroundColor Red
-        Write-Host "访问: https://flutter.dev/docs/get-started/install" -ForegroundColor Yellow
-        Read-Host "按Enter键退出"
-        exit
+    Write-Host "请选择：" -ForegroundColor Yellow
+    Write-Host "1. 运行Flutter安装脚本" -ForegroundColor White
+    Write-Host "2. 手动安装Flutter" -ForegroundColor White
+    Write-Host "3. 退出" -ForegroundColor White
+    
+    $installChoice = Read-Host "请选择 (1-3)"
+    
+    switch ($installChoice) {
+        "1" {
+            if (Test-Path "install_flutter_simple.ps1") {
+                Write-Host "运行Flutter简易安装脚本..." -ForegroundColor Yellow
+                .\install_flutter_simple.ps1
+                
+                Write-Host "请重启PowerShell后重新运行此脚本" -ForegroundColor Yellow
+                Read-Host "按Enter键退出"
+                exit
+            } else {
+                Write-Host "找不到安装脚本" -ForegroundColor Red
+                exit
+            }
+        }
+        "2" {
+            Write-Host "请手动安装Flutter SDK:" -ForegroundColor Yellow
+            Write-Host "访问: https://flutter.dev/docs/get-started/install/windows" -ForegroundColor Cyan
+            Read-Host "按Enter键退出"
+            exit
+        }
+        "3" {
+            exit
+        }
+        default {
+            Write-Host "无效选择，退出" -ForegroundColor Red
+            exit
+        }
     }
 }
 
