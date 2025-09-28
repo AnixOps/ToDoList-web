@@ -1,56 +1,56 @@
-# å¿«é€ŸFlutteré¡¹ç›®åˆ›å»ºè„šæœ¬ï¼ˆæ— éœ€å®‰è£…Flutterï¼‰
+# ¿ìËÙFlutterÏîÄ¿´´½¨½Å±¾£¨ÎŞĞè°²×°Flutter£©
 
-Write-Host "ğŸš€ Flutteré¡¹ç›®åˆ›å»ºè„šæœ¬" -ForegroundColor Green
+Write-Host "? FlutterÏîÄ¿´´½¨½Å±¾" -ForegroundColor Green
 Write-Host "=====================" -ForegroundColor Green
 
-Write-Host "ç”±äºFlutterå®‰è£…å¯èƒ½æ¯”è¾ƒå¤æ‚ï¼Œæˆ‘ä»¬å…ˆåˆ›å»ºé¡¹ç›®ç»“æ„" -ForegroundColor Yellow
-Write-Host "ä½ å¯ä»¥ç¨åå®‰è£…Flutter SDK" -ForegroundColor Yellow
+Write-Host "ÓÉÓÚFlutter°²×°¿ÉÄÜ±È½Ï¸´ÔÓ£¬ÎÒÃÇÏÈ´´½¨ÏîÄ¿½á¹¹" -ForegroundColor Yellow
+Write-Host "Äã¿ÉÒÔÉÔºó°²×°Flutter SDK" -ForegroundColor Yellow
 
-# æ£€æŸ¥é¡¹ç›®ç›®å½•
+# ¼ì²éÏîÄ¿Ä¿Â¼
 if (!(Test-Path "todolist_mobile")) {
-    Write-Host "åˆ›å»ºé¡¹ç›®ç›®å½•..." -ForegroundColor Yellow
+    Write-Host "´´½¨ÏîÄ¿Ä¿Â¼..." -ForegroundColor Yellow
     New-Item -ItemType Directory -Path "todolist_mobile" -Force
-    Write-Host "âœ… é¡¹ç›®ç›®å½•åˆ›å»ºå®Œæˆ" -ForegroundColor Green
+    Write-Host "? ÏîÄ¿Ä¿Â¼´´½¨Íê³É" -ForegroundColor Green
 } else {
-    Write-Host "âœ… é¡¹ç›®ç›®å½•å·²å­˜åœ¨" -ForegroundColor Green
+    Write-Host "? ÏîÄ¿Ä¿Â¼ÒÑ´æÔÚ" -ForegroundColor Green
 }
 
-# å¤åˆ¶æ‰€æœ‰æºä»£ç æ–‡ä»¶
+# ¸´ÖÆËùÓĞÔ´´úÂëÎÄ¼ş
 if (Test-Path "todolist_mobile\lib") {
-    Write-Host "âœ… æºä»£ç å·²å­˜åœ¨" -ForegroundColor Green
+    Write-Host "? Ô´´úÂëÒÑ´æÔÚ" -ForegroundColor Green
 } else {
-    Write-Host "å¤åˆ¶æºä»£ç æ–‡ä»¶..." -ForegroundColor Yellow
+    Write-Host "¸´ÖÆÔ´´úÂëÎÄ¼ş..." -ForegroundColor Yellow
     
-    # è¿™é‡Œæºä»£ç å·²ç»åœ¨æ­£ç¡®çš„ä½ç½®äº†
-    Write-Host "âœ… æºä»£ç å¤åˆ¶å®Œæˆ" -ForegroundColor Green
+    # ÕâÀïÔ´´úÂëÒÑ¾­ÔÚÕıÈ·µÄÎ»ÖÃÁË
+    Write-Host "? Ô´´úÂë¸´ÖÆÍê³É" -ForegroundColor Green
 }
 
-Write-Host "`nğŸ“± é¡¹ç›®åˆ›å»ºå®Œæˆï¼" -ForegroundColor Green
+Write-Host "`n? ÏîÄ¿´´½¨Íê³É£¡" -ForegroundColor Green
 Write-Host "==================" -ForegroundColor Green
 
-Write-Host "ä¸‹ä¸€æ­¥æ“ä½œï¼š" -ForegroundColor White
-Write-Host "1. å®‰è£…Flutter SDK:" -ForegroundColor Cyan
-Write-Host "   è®¿é—®: https://flutter.dev/docs/get-started/install/windows" -ForegroundColor White
-Write-Host "   ä¸‹è½½å¹¶è§£å‹åˆ° C:\flutter" -ForegroundColor White
-Write-Host "   æ·»åŠ  C:\flutter\bin åˆ°PATHç¯å¢ƒå˜é‡" -ForegroundColor White
+Write-Host "ÏÂÒ»²½²Ù×÷£º" -ForegroundColor White
+Write-Host "1. °²×°Flutter SDK:" -ForegroundColor Cyan
+Write-Host "   ·ÃÎÊ: https://flutter.dev/docs/get-started/install/windows" -ForegroundColor White
+Write-Host "   ÏÂÔØ²¢½âÑ¹µ½ C:\flutter" -ForegroundColor White
+Write-Host "   Ìí¼Ó C:\flutter\bin µ½PATH»·¾³±äÁ¿" -ForegroundColor White
 
-Write-Host "`n2. å®‰è£…VS Code Flutteræ’ä»¶:" -ForegroundColor Cyan
-Write-Host "   æ‰“å¼€VS Codeï¼Œæœç´¢å¹¶å®‰è£… Flutter æ’ä»¶" -ForegroundColor White
+Write-Host "`n2. °²×°VS Code Flutter²å¼ş:" -ForegroundColor Cyan
+Write-Host "   ´ò¿ªVS Code£¬ËÑË÷²¢°²×° Flutter ²å¼ş" -ForegroundColor White
 
-Write-Host "`n3. éªŒè¯å®‰è£…:" -ForegroundColor Cyan
-Write-Host "   æ‰“å¼€æ–°çš„PowerShellçª—å£" -ForegroundColor White
-Write-Host "   è¿è¡Œ: flutter doctor" -ForegroundColor White
+Write-Host "`n3. ÑéÖ¤°²×°:" -ForegroundColor Cyan
+Write-Host "   ´ò¿ªĞÂµÄPowerShell´°¿Ú" -ForegroundColor White
+Write-Host "   ÔËĞĞ: flutter doctor" -ForegroundColor White
 
-Write-Host "`n4. è¿è¡Œé¡¹ç›®:" -ForegroundColor Cyan
+Write-Host "`n4. ÔËĞĞÏîÄ¿:" -ForegroundColor Cyan
 Write-Host "   cd todolist_mobile" -ForegroundColor White
 Write-Host "   flutter pub get" -ForegroundColor White
 Write-Host "   flutter run -d chrome" -ForegroundColor White
 
-Write-Host "`nğŸ”§ é¡¹ç›®é…ç½®:" -ForegroundColor Green
-Write-Host "- æ›´æ–°APIåœ°å€: lib/utils/constants.dart" -ForegroundColor White
-Write-Host "- é…ç½®ä½ çš„äº‘ç«¯APIåŸŸå" -ForegroundColor White
+Write-Host "`n? ÏîÄ¿ÅäÖÃ:" -ForegroundColor Green
+Write-Host "- ¸üĞÂAPIµØÖ·: lib/utils/constants.dart" -ForegroundColor White
+Write-Host "- ÅäÖÃÄãµÄÔÆ¶ËAPIÓòÃû" -ForegroundColor White
 
-Write-Host "`nğŸ“ é¡¹ç›®æ–‡ä»¶ä½ç½®:" -ForegroundColor Green
+Write-Host "`n? ÏîÄ¿ÎÄ¼şÎ»ÖÃ:" -ForegroundColor Green
 Write-Host "$(Get-Location)\todolist_mobile" -ForegroundColor White
 
-Read-Host "`næŒ‰Enteré”®é€€å‡º"
+Read-Host "`n°´Enter¼üÍË³ö"
