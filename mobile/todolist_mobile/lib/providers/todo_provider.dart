@@ -351,6 +351,207 @@ class TodoProvider with ChangeNotifier {
     }
   }
 
+  // 创建任务
+  Future<bool> createTask(int eventId, TodoTask task) async {
+    _setLoading(true);
+    _clearError();
+
+    try {
+      if (_isOfflineMode) {
+        // 离线模式：保存到本地数据库
+        await _offlineService.dbService.insertTask(task);
+        _tasks.insert(0, task);
+
+        // 更新事件的任务列表
+        final eventIndex = _events.indexWhere((e) => e.id == eventId);
+        if (eventIndex != -1) {
+          final event = _events[eventIndex];
+          final updatedTasks = [...?event.tasks, task];
+          _events[eventIndex] = event.copyWith(tasks: updatedTasks);
+        }
+
+        notifyListeners();
+        return true;
+      } else {
+        // 在线模式：发送到服务器
+        final response = await _apiService.post<Map<String, dynamic>>(
+          ApiConstants.tasks,
+          data: task.toJson(),
+          fromJson: (json) => json,
+        );
+
+        if (response.isSuccess && response.data != null) {
+          final newTask = TodoTask.fromJson(response.data!);
+          _tasks.insert(0, newTask);
+
+          // 更新事件的任务列表
+          final eventIndex = _events.indexWhere((e) => e.id == eventId);
+          if (eventIndex != -1) {
+            final event = _events[eventIndex];
+            final updatedTasks = [...?event.tasks, newTask];
+            _events[eventIndex] = event.copyWith(tasks: updatedTasks);
+          }
+
+          // 同时保存到本地数据库
+          await _offlineService.dbService.insertTask(newTask);
+
+          notifyListeners();
+          return true;
+        } else {
+          _setError(response.message ?? '创建任务失败');
+          return false;
+        }
+      }
+    } catch (e) {
+      _setError('创建任务异常: ${e.toString()}');
+      return false;
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  // 更新任务
+  Future<bool> updateTask(TodoTask task) async {
+    _setLoading(true);
+    _clearError();
+
+    try {
+      if (_isOfflineMode) {
+        // 离线模式：更新本地数据库
+        await _offlineService.dbService.updateTask(task);
+
+        final taskIndex = _tasks.indexWhere((t) => t.id == task.id);
+        if (taskIndex != -1) {
+          _tasks[taskIndex] = task;
+        }
+
+        // 更新事件的任务列表
+        final eventIndex = _events.indexWhere((e) => e.id == task.eventId);
+        if (eventIndex != -1) {
+          final event = _events[eventIndex];
+          final updatedTasks =
+              event.tasks?.map((t) => t.id == task.id ? task : t).toList();
+          if (updatedTasks != null) {
+            _events[eventIndex] = event.copyWith(tasks: updatedTasks);
+          }
+        }
+
+        notifyListeners();
+        return true;
+      } else {
+        // 在线模式：发送到服务器
+        final response = await _apiService.put<Map<String, dynamic>>(
+          '${ApiConstants.tasks}/${task.id}',
+          data: task.toJson(),
+          fromJson: (json) => json,
+        );
+
+        if (response.isSuccess && response.data != null) {
+          final updatedTask = TodoTask.fromJson(response.data!);
+
+          final taskIndex = _tasks.indexWhere((t) => t.id == task.id);
+          if (taskIndex != -1) {
+            _tasks[taskIndex] = updatedTask;
+          }
+
+          // 更新事件的任务列表
+          final eventIndex =
+              _events.indexWhere((e) => e.id == updatedTask.eventId);
+          if (eventIndex != -1) {
+            final event = _events[eventIndex];
+            final updatedTasks = event.tasks
+                ?.map((t) => t.id == task.id ? updatedTask : t)
+                .toList();
+            if (updatedTasks != null) {
+              _events[eventIndex] = event.copyWith(tasks: updatedTasks);
+            }
+          }
+
+          // 同时更新本地数据库
+          await _offlineService.dbService.updateTask(updatedTask);
+
+          notifyListeners();
+          return true;
+        } else {
+          _setError(response.message ?? '更新任务失败');
+          return false;
+        }
+      }
+    } catch (e) {
+      _setError('更新任务异常: ${e.toString()}');
+      return false;
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  // 删除任务
+  Future<bool> deleteTask(int taskId) async {
+    _setLoading(true);
+    _clearError();
+
+    try {
+      if (_isOfflineMode) {
+        // 离线模式：从本地数据库删除
+        await _offlineService.dbService.deleteTask(taskId);
+
+        final task = _tasks.firstWhere((t) => t.id == taskId,
+            orElse: () => throw Exception('Task not found'));
+        _tasks.removeWhere((t) => t.id == taskId);
+
+        // 更新事件的任务列表
+        final eventIndex = _events.indexWhere((e) => e.id == task.eventId);
+        if (eventIndex != -1) {
+          final event = _events[eventIndex];
+          final updatedTasks =
+              event.tasks?.where((t) => t.id != taskId).toList();
+          if (updatedTasks != null) {
+            _events[eventIndex] = event.copyWith(tasks: updatedTasks);
+          }
+        }
+
+        notifyListeners();
+        return true;
+      } else {
+        // 在线模式：从服务器删除
+        final response = await _apiService.delete(
+          '${ApiConstants.tasks}/$taskId',
+        );
+
+        if (response.isSuccess) {
+          final task = _tasks.firstWhere((t) => t.id == taskId,
+              orElse: () => throw Exception('Task not found'));
+          _tasks.removeWhere((t) => t.id == taskId);
+
+          // 更新事件的任务列表
+          final eventIndex = _events.indexWhere((e) => e.id == task.eventId);
+          if (eventIndex != -1) {
+            final event = _events[eventIndex];
+            final updatedTasks =
+                event.tasks?.where((t) => t.id != taskId).toList();
+            if (updatedTasks != null) {
+              _events[eventIndex] = event.copyWith(tasks: updatedTasks);
+            }
+          }
+
+          // 同时从本地数据库删除
+          await _offlineService.dbService.deleteTask(taskId);
+
+          notifyListeners();
+          return true;
+        } else {
+          _setError(response.message ?? '删除任务失败');
+          return false;
+        }
+      }
+    } catch (e) {
+      _setError('删除任务异常: ${e.toString()}');
+      return false;
+    } finally {
+      _setLoading(false);
+    }
+  }
+
   // 切换在线/离线模式
   Future<void> switchMode({bool offline = false}) async {
     _setLoading(true);

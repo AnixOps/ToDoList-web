@@ -173,4 +173,33 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get tasks => '任务';
+
+  @override
+  String get markComplete => '标记为完成';
+
+  @override
+  String get markIncomplete => '标记为未完成';
+
+  @override
+  String get progress => '进度';
+
+  @override
+  String get addFirstTask => '添加第一个任务';
+
+  @override
+  String get addSubtask => '添加子任务';
+
+  @override
+  String get taskDetails => '任务详情';
+
+  @override
+  String get noSubTasks => '暂无子任务';
+
+  @override
+  String addSubTaskTo(String parentTitle) {
+    return '添加到: $parentTitle';
+  }
+
+  @override
+  String get selectDueDate => '选择截止日期（可选）';
 }

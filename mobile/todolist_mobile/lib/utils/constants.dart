@@ -1,26 +1,89 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+/// 环境配置
+enum Environment {
+  development,
+  production,
+}
+
+class Config {
+  static Environment get environment {
+    final environmentString =
+        dotenv.get('ENVIRONMENT', fallback: 'development');
+    return Environment.values.firstWhere(
+      (e) => e.name == environmentString,
+      orElse: () => Environment.development,
+    );
+  }
+
+  static String get baseUrl {
+    switch (environment) {
+      case Environment.development:
+        return dotenv.get('DEV_API_URL',
+            fallback: 'http://localhost:8080/api/v1');
+      case Environment.production:
+        return dotenv.get('PROD_API_URL',
+            fallback: 'https://api.todolist.com/api/v1');
+    }
+  }
+
+  // WebSocket URL（可选）
+  static String get wsUrl {
+    switch (environment) {
+      case Environment.development:
+        return dotenv.get('DEV_WS_URL', fallback: 'ws://localhost:8080/ws');
+      case Environment.production:
+        return dotenv.get('PROD_WS_URL', fallback: 'wss://api.todolist.com/ws');
+    }
+  }
+
+  // 应用配置
+  static String get appName => dotenv.get('APP_NAME', fallback: 'ToDoList');
+  static String get appVersion => dotenv.get('APP_VERSION', fallback: '1.0.0');
+
+  // 功能开关
+  static bool get enableAnalytics =>
+      dotenv.get('ENABLE_ANALYTICS', fallback: 'false') == 'true';
+  static bool get enableCrashReporting =>
+      dotenv.get('ENABLE_CRASH_REPORTING', fallback: 'false') == 'true';
+  static bool get enableDebugMode =>
+      dotenv.get('ENABLE_DEBUG_MODE', fallback: 'true') == 'true';
+
+  // API配置
+  static int get apiTimeout =>
+      int.tryParse(dotenv.get('API_TIMEOUT', fallback: '30000')) ?? 30000;
+
+  // 本地存储配置
+  static int get maxCacheSize =>
+      int.tryParse(dotenv.get('MAX_CACHE_SIZE', fallback: '50')) ?? 50;
+  static int get autoSyncInterval =>
+      int.tryParse(dotenv.get('AUTO_SYNC_INTERVAL', fallback: '300')) ?? 300;
+
+  static bool get isProduction => environment == Environment.production;
+  static bool get isDevelopment => environment == Environment.development;
+}
 
 /// API配置
 class ApiConstants {
-  // 替换为你的实际API域名 - 请更新这个URL为你的云端API地址
-  static const String baseUrl = 'https://your-actual-api-domain.com/api/v1';
-  
+  static String get baseUrl => Config.baseUrl;
+
   // 认证接口
-  static const String login = '$baseUrl/auth/login';
-  static const String register = '$baseUrl/auth/register';
-  static const String refresh = '$baseUrl/auth/refresh';
-  
+  static String get login => '$baseUrl/auth/login';
+  static String get register => '$baseUrl/auth/register';
+  static String get refresh => '$baseUrl/auth/refresh';
+
   // 事件接口
-  static const String events = '$baseUrl/events';
-  static const String eventsById = '$baseUrl/events'; // + /{id}
-  
+  static String get events => '$baseUrl/events';
+  static String get eventsById => '$baseUrl/events'; // + /{id}
+
   // 任务接口
-  static const String tasks = '$baseUrl/tasks';
-  static const String tasksById = '$baseUrl/tasks'; // + /{id}
-  
+  static String get tasks => '$baseUrl/tasks';
+  static String get tasksById => '$baseUrl/tasks'; // + /{id}
+
   // 用户接口
-  static const String profile = '$baseUrl/user/profile';
-  static const String updateProfile = '$baseUrl/user/profile';
+  static String get profile => '$baseUrl/user/profile';
+  static String get updateProfile => '$baseUrl/user/profile';
 }
 
 /// 应用主题色彩
@@ -30,15 +93,15 @@ class AppColors {
   static const Color success = Color(0xFF34C759);
   static const Color warning = Color(0xFFFF9500);
   static const Color error = Color(0xFFFF3B30);
-  
+
   static const Color background = Color(0xFFF2F2F7);
   static const Color surface = Color(0xFFFFFFFF);
   static const Color surfaceVariant = Color(0xFFF2F2F7);
-  
+
   static const Color textPrimary = Color(0xFF000000);
   static const Color textSecondary = Color(0xFF8E8E93);
   static const Color textTertiary = Color(0xFFC7C7CC);
-  
+
   static const Color divider = Color(0xFFE5E5EA);
 }
 
@@ -49,61 +112,61 @@ class AppTextStyles {
     fontWeight: FontWeight.bold,
     color: AppColors.textPrimary,
   );
-  
+
   static const TextStyle title1 = TextStyle(
     fontSize: 28,
     fontWeight: FontWeight.bold,
     color: AppColors.textPrimary,
   );
-  
+
   static const TextStyle title2 = TextStyle(
     fontSize: 22,
     fontWeight: FontWeight.bold,
     color: AppColors.textPrimary,
   );
-  
+
   static const TextStyle title3 = TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.w600,
     color: AppColors.textPrimary,
   );
-  
+
   static const TextStyle headline = TextStyle(
     fontSize: 17,
     fontWeight: FontWeight.w600,
     color: AppColors.textPrimary,
   );
-  
+
   static const TextStyle body = TextStyle(
     fontSize: 17,
     fontWeight: FontWeight.normal,
     color: AppColors.textPrimary,
   );
-  
+
   static const TextStyle callout = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.normal,
     color: AppColors.textPrimary,
   );
-  
+
   static const TextStyle subhead = TextStyle(
     fontSize: 15,
     fontWeight: FontWeight.normal,
     color: AppColors.textPrimary,
   );
-  
+
   static const TextStyle footnote = TextStyle(
     fontSize: 13,
     fontWeight: FontWeight.normal,
     color: AppColors.textSecondary,
   );
-  
+
   static const TextStyle caption1 = TextStyle(
     fontSize: 12,
     fontWeight: FontWeight.normal,
     color: AppColors.textSecondary,
   );
-  
+
   static const TextStyle caption2 = TextStyle(
     fontSize: 11,
     fontWeight: FontWeight.normal,
@@ -174,7 +237,7 @@ extension TaskStatusExtension on TaskStatus {
         return '已取消';
     }
   }
-  
+
   Color get color {
     switch (this) {
       case TaskStatus.pending:
@@ -198,7 +261,7 @@ extension TaskPriorityExtension on TaskPriority {
         return '高';
     }
   }
-  
+
   Color get color {
     switch (this) {
       case TaskPriority.low:

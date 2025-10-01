@@ -10,6 +10,7 @@ import '../widgets/edit_todo_dialog.dart';
 import '../widgets/loading_widget.dart';
 import '../utils/constants.dart';
 import '../l10n/generated/app_localizations.dart';
+import 'task_detail_screen.dart';
 
 class TodoListScreen extends StatefulWidget {
   const TodoListScreen({super.key});
@@ -216,9 +217,11 @@ class _TodoListScreenState extends State<TodoListScreen>
   }
 
   void _showEventDetails(TodoEvent event) {
-    // TODO: 实现事件详情页面
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('查看详情: ${event.title}')),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TaskDetailScreen(event: event),
+      ),
     );
   }
 

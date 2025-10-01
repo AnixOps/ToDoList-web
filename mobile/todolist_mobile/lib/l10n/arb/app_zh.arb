@@ -51,5 +51,14 @@
   "viewDetails": "查看详情: {taskTitle}",
   "operationFailed": "操作失败",
   "profile": "我的",
-  "tasks": "任务"
+  "tasks": "任务",
+  "markComplete": "标记为完成",
+  "markIncomplete": "标记为未完成",
+  "progress": "进度",
+  "addFirstTask": "添加第一个任务",
+  "addSubtask": "添加子任务",
+  "taskDetails": "任务详情",
+  "noSubTasks": "暂无子任务",
+  "addSubTaskTo": "添加到: {parentTitle}",
+  "selectDueDate": "选择截止日期（可选）"
 }

@@ -1,0 +1,251 @@
+# Release Notes for Google Play Console
+# Version: v0.1.2
+# Copy and paste each language section into the corresponding field
+# Character limit: 500 per language
+
+<en-US>
+TodoList Mobile v0.1.2 - First Release
+
+�?What's New:
+�?Complete task & event management
+�?Offline mode with cloud sync
+�?Biometric authentication (fingerprint/face)
+�?Dark mode support
+�?Secure local storage
+
+🎯 Key Features:
+�?Create events with multiple tasks
+�?Set priorities and due dates
+�?Track task completion progress
+�?Beautiful Material Design UI
+
+First production release!
+</en-US>
+
+<zh-CN>
+TodoList Mobile v0.1.2 - 首次发布
+
+�?更新内容�?
+�?完整的任务和事件管理
+�?离线模式与云端同�?
+�?生物识别认证（指�?面部�?
+�?深色模式支持
+�?安全的本地存�?
+
+🎯 主要功能�?
+�?创建包含多个任务的事�?
+�?设置优先级和截止日期
+�?跟踪任务完成进度
+�?精美�?Material Design 界面
+
+首个正式版本�?
+</zh-CN>
+
+<zh-TW>
+TodoList Mobile v0.1.2 - 首次發佈
+
+�?更新內容�?
+�?完整的任務和事件管理
+�?離線模式與雲端同�?
+�?生物識別認證（指�?臉部�?
+�?深色模式支援
+�?安全的本機儲�?
+
+🎯 主要功能�?
+�?建立包含多個任務的事件
+�?設定優先順序和截止日�?
+�?追蹤任務完成進度
+�?精美�?Material Design 介面
+
+首個正式版本！
+</zh-TW>
+
+<ja-JP>
+TodoList Mobile v0.1.2 - 初回リリース
+
+�?新機能：
+�?完全なタスク・イベント管�?
+�?オフラインモードとクラウド同�?
+�?生体認証（指�?顔認証）
+�?ダークモード対�?
+�?安全なローカルストレージ
+
+🎯 主な機能�?
+�?複数タスクを含むイベント作成
+�?優先順位と期限の設定
+�?タスク完了の進捗追跡
+�?美しいMaterial Designデザイン
+
+初回正式リリース�?
+</ja-JP>
+
+<ko-KR>
+TodoList Mobile v0.1.2 - �?출시
+
+�?새로�?기능:
+�?완전�?작업 �?이벤�?관�?
+�?오프라인 모드와 클라우드 동기�?
+�?생체 인증 (지�?얼굴)
+�?다크 모드 지�?
+�?안전�?로컬 저장소
+
+🎯 주요 기능:
+�?여러 작업�?포함�?이벤�?생성
+�?우선순위 �?마감�?설정
+�?작업 완료 진행 상황 추적
+�?아름다운 Material Design UI
+
+�?번째 정식 릴리�?
+</ko-KR>
+
+<es-ES>
+TodoList Mobile v0.1.2 - Lanzamiento Inicial
+
+�?Novedades:
+�?Gestión completa de tareas y eventos
+�?Modo sin conexión con sincronización en la nube
+�?Autenticación biométrica (huella/facial)
+�?Soporte para modo oscuro
+�?Almacenamiento local seguro
+
+🎯 Características principales:
+�?Crear eventos con múltiples tareas
+�?Establecer prioridades y fechas límite
+�?Seguimiento del progreso de tareas
+�?Hermosa interfaz Material Design
+
+¡Primer lanzamiento oficial!
+</es-ES>
+
+<fr-FR>
+TodoList Mobile v0.1.2 - Version Initiale
+
+�?Nouveautés :
+�?Gestion complète des tâches et événements
+�?Mode hors ligne avec synchronisation cloud
+�?Authentification biométrique (empreinte/faciale)
+�?Support du mode sombre
+�?Stockage local sécurisé
+
+🎯 Fonctionnalités principales :
+�?Créer des événements avec plusieurs tâches
+�?Définir les priorités et dates d'échéance
+�?Suivi de la progression des tâches
+�?Belle interface Material Design
+
+Première version officielle !
+</fr-FR>
+
+<de-DE>
+TodoList Mobile v0.1.2 - Erste Veröffentlichung
+
+�?Was ist neu:
+�?Vollständige Aufgaben- und Ereignisverwaltung
+�?Offline-Modus mit Cloud-Synchronisation
+�?Biometrische Authentifizierung (Fingerabdruck/Gesicht)
+�?Unterstützung für dunklen Modus
+�?Sichere lokale Speicherung
+
+🎯 Hauptfunktionen:
+�?Ereignisse mit mehreren Aufgaben erstellen
+�?Prioritäten und Fälligkeitsdaten festlegen
+�?Fortschritt der Aufgaben verfolgen
+�?Schöne Material Design-Oberfläche
+
+Erste offizielle Version!
+</de-DE>
+
+<pt-BR>
+TodoList Mobile v0.1.2 - Lançamento Inicial
+
+�?Novidades:
+�?Gerenciamento completo de tarefas e eventos
+�?Modo offline com sincronização na nuvem
+�?Autenticação biométrica (digital/facial)
+�?Suporte para modo escuro
+�?Armazenamento local seguro
+
+🎯 Recursos principais:
+�?Criar eventos com múltiplas tarefas
+�?Definir prioridades e datas de vencimento
+�?Acompanhar progresso das tarefas
+�?Bela interface Material Design
+
+Primeiro lançamento oficial!
+</pt-BR>
+
+<ru-RU>
+TodoList Mobile v0.1.2 - Первый релиз
+
+�?Что нового:
+�?Полное управление задачами и событиями
+�?Офлайн-режим с облачной синхронизацией
+�?Биометрическая аутентификация (отпечаток/лицо)
+�?Поддержка темного режима
+�?Безопасное локальное хранилище
+
+🎯 Основные возможности:
+�?Создание событий с несколькими задачами
+�?Установка приоритетов и сроков
+�?Отслеживание прогресса выполнения
+�?Красивый интерфейс Material Design
+
+Первый официальный релиз!
+</ru-RU>
+
+<it-IT>
+TodoList Mobile v0.1.2 - Rilascio Iniziale
+
+�?Novità:
+�?Gestione completa di attività ed eventi
+�?Modalità offline con sincronizzazione cloud
+�?Autenticazione biometrica (impronta/facciale)
+�?Supporto modalità scura
+�?Archiviazione locale sicura
+
+🎯 Caratteristiche principali:
+�?Crea eventi con più attività
+�?Imposta priorità e scadenze
+�?Monitora i progressi delle attività
+�?Bellissima interfaccia Material Design
+
+Primo rilascio ufficiale!
+</it-IT>
+
+<ar>
+TodoList Mobile v0.1.2 - الإصدار الأولي
+
+�?ما الجديد:
+�?إدارة كاملة للمهام والأحداث
+�?وضع عدم الاتصال مع المزامنة السحابية
+�?مصادقة بيومترية (بصمة/وجه)
+�?دعم الوضع الداكن
+�?تخزين محلي آمن
+
+🎯 الميزات الرئيسية:
+�?إنشاء أحداث مع مهام متعددة
+�?تعيين الأولويات والمواعيد النهائية
+�?تتبع تقدم المهام
+�?واجهة Material Design جميلة
+
+الإصدار الرسمي الأول!
+</ar>
+
+<hi-IN>
+TodoList Mobile v0.1.2 - प्रारंभि�?रिली�?
+
+�?नय�?क्या है:
+�?संपूर्�?कार्�?और इवें�?प्रबंध�?
+�?ऑफ़लाइ�?मो�?क्लाउड सिंक के सा�?
+�?बायोमेट्रि�?प्रमाणीकर�?(फिंगरप्रिं�?चेहर�?
+�?डार्�?मो�?समर्थन
+�?सुरक्षित स्थानी�?संग्रह�?
+
+🎯 मुख्�?सुविधाएँ:
+�?कई कार्यो�?के सा�?इवें�?बनाए�?
+�?प्राथमिकताएं और सम�?सीमा से�?करें
+�?कार्�?प्रगति ट्रै�?करें
+�?सुंद�?Material Design UI
+
+पहली आधिकारिक रिली�?
+</hi-IN>

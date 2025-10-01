@@ -1,6 +1,6 @@
 name: todolist_mobile
 description: ToDoList移动端应用 - Flutter版本
-version: 1.0.0+1
+version: 0.1.2+2
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -48,6 +48,9 @@ dependencies:
   # 文件操作
   path_provider: ^2.1.1
   
+  # 环境变量
+  flutter_dotenv: ^5.1.0
+  
   # 日期时间
   intl: ^0.20.2
   
@@ -69,6 +72,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - .env
   
   fonts:
     - family: SF Pro Display

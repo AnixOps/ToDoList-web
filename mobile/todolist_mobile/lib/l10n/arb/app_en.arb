@@ -292,5 +292,56 @@
   "tasks": "Tasks",
   "@tasks": {
     "description": "Tasks tab label"
+  },
+  
+  "markComplete": "Mark as complete",
+  "@markComplete": {
+    "description": "Button text to mark task as complete"
+  },
+  
+  "markIncomplete": "Mark as incomplete",
+  "@markIncomplete": {
+    "description": "Button text to mark task as incomplete"
+  },
+  
+  "progress": "Progress",
+  "@progress": {
+    "description": "Progress label for tasks"
+  },
+  
+  "addFirstTask": "Add first task",
+  "@addFirstTask": {
+    "description": "Text to add first task when list is empty"
+  },
+  
+  "addSubtask": "Add Subtask",
+  "@addSubtask": {
+    "description": "Button text to add subtask"
+  },
+  
+  "taskDetails": "Task Details",
+  "@taskDetails": {
+    "description": "Title for task details screen"
+  },
+  
+  "noSubTasks": "No subtasks",
+  "@noSubTasks": {
+    "description": "Text when there are no subtasks"
+  },
+  
+  "addSubTaskTo": "Add to: {parentTitle}",
+  "@addSubTaskTo": {
+    "description": "Text showing which parent task subtask will be added to",
+    "placeholders": {
+      "parentTitle": {
+        "type": "String",
+        "description": "Title of the parent task"
+      }
+    }
+  },
+  
+  "selectDueDate": "Select due date (optional)",
+  "@selectDueDate": {
+    "description": "Hint text for due date selection"
   }
 }

@@ -175,4 +175,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tasks => 'Tasks';
+
+  @override
+  String get markComplete => 'Mark as complete';
+
+  @override
+  String get markIncomplete => 'Mark as incomplete';
+
+  @override
+  String get progress => 'Progress';
+
+  @override
+  String get addFirstTask => 'Add first task';
+
+  @override
+  String get addSubtask => 'Add Subtask';
+
+  @override
+  String get taskDetails => 'Task Details';
+
+  @override
+  String get noSubTasks => 'No subtasks';
+
+  @override
+  String addSubTaskTo(String parentTitle) {
+    return 'Add to: $parentTitle';
+  }
+
+  @override
+  String get selectDueDate => 'Select due date (optional)';
 }

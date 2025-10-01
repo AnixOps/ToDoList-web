@@ -65,6 +65,49 @@ todolist_mobile/
 - ✅ 云端API对接
 - ✅ iOS/Android跨平台支持
 - ✅ 离线模式支持
+- ✅ 多语言支持（中文/英文）
+- ✅ Material Design 3 UI
+
+## 📦 构建和发布
+
+### 快速构建
+
+```powershell
+# 生成签名密钥（首次）
+.\generate_keystore.ps1
+
+# 构建 Google Play 发布包 (AAB)
+.\build_android.ps1
+
+# 构建 APK 用于测试
+.\build_android.ps1 -Type apk
+```
+
+### 📚 详细文档
+
+- **🚀 快速入门**：[BUILD_QUICK_START.md](BUILD_QUICK_START.md) - 5分钟快速上手
+- **📖 完整指南**：[GOOGLE_PLAY_RELEASE.md](GOOGLE_PLAY_RELEASE.md) - Google Play 发布完整流程
+- **⚙️ 环境配置**：[ENV_CONFIG.md](ENV_CONFIG.md) - .env 环境变量配置
+
+### 构建脚本
+
+- `generate_keystore.ps1` - 生成签名密钥
+- `build_android.ps1` - Android 构建脚本
+- `run_dev.ps1` - 开发环境运行
+- `run_prod.ps1` - 生产环境运行
+
+## ⚙️ 环境配置
+
+项目使用 `.env` 文件管理环境变量：
+
+```powershell
+# 首次运行，复制配置文件
+Copy-Item .env.example .env
+
+# 编辑 .env 配置你的 API 地址
+```
+
+详见：[ENV_CONFIG.md](ENV_CONFIG.md)
 
 ## 开发提示
 
@@ -72,3 +115,4 @@ todolist_mobile/
 - 按 `r` 键热重载，按 `R` 键热重启
 - 首次运行Chrome版本进行UI测试
 - 配置好API后测试完整功能
+- 构建前确保已配置 `.env` 文件

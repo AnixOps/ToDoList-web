@@ -409,6 +409,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tasks'**
   String get tasks;
+
+  /// Button text to mark task as complete
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as complete'**
+  String get markComplete;
+
+  /// Button text to mark task as incomplete
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as incomplete'**
+  String get markIncomplete;
+
+  /// Progress label for tasks
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get progress;
+
+  /// Text to add first task when list is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Add first task'**
+  String get addFirstTask;
+
+  /// Button text to add subtask
+  ///
+  /// In en, this message translates to:
+  /// **'Add Subtask'**
+  String get addSubtask;
+
+  /// Title for task details screen
+  ///
+  /// In en, this message translates to:
+  /// **'Task Details'**
+  String get taskDetails;
+
+  /// Text when there are no subtasks
+  ///
+  /// In en, this message translates to:
+  /// **'No subtasks'**
+  String get noSubTasks;
+
+  /// Text showing which parent task subtask will be added to
+  ///
+  /// In en, this message translates to:
+  /// **'Add to: {parentTitle}'**
+  String addSubTaskTo(String parentTitle);
+
+  /// Hint text for due date selection
+  ///
+  /// In en, this message translates to:
+  /// **'Select due date (optional)'**
+  String get selectDueDate;
 }
 
 class _AppLocalizationsDelegate

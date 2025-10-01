@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:ui' as ui;
 
 import 'providers/auth_provider.dart';
@@ -15,8 +16,20 @@ import 'screens/todo_list_screen.dart';
 import 'screens/profile_screen.dart';
 import 'utils/constants.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // 加载环境变量
+  try {
+    await dotenv.load(fileName: ".env");
+    debugPrint('✅ 环境变量加载成功');
+    debugPrint('📍 当前环境: ${Config.environment.name}');
+    debugPrint('🌐 API地址: ${Config.baseUrl}');
+  } catch (e) {
+    debugPrint('⚠️ 加载.env文件失败: $e');
+    debugPrint('ℹ️ 使用默认配置');
+  }
+
   runApp(const ToDoListApp());
 }
 

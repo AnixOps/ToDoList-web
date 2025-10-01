@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:html' as html;
 import 'package:flutter/foundation.dart';
+
+// 条件导入：Web 平台使用 dart:html，其他平台使用 stub
+import 'web_storage_stub.dart' if (dart.library.html) 'web_storage_html.dart';
 
 import '../models/user.dart';
 import '../models/todo_event.dart';
@@ -11,7 +13,7 @@ class WebStorageService {
   factory WebStorageService() => _instance;
   WebStorageService._internal();
 
-  late html.Storage _localStorage;
+  late Storage _localStorage;
   bool _isInitialized = false;
 
   static const String _eventsKey = 'todolist_events';
@@ -23,7 +25,7 @@ class WebStorageService {
     if (_isInitialized) return;
 
     if (kIsWeb) {
-      _localStorage = html.window.localStorage;
+      _localStorage = window.localStorage;
       _isInitialized = true;
     } else {
       throw UnsupportedError(
